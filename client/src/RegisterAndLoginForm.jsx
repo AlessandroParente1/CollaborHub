@@ -13,7 +13,7 @@ function RegisterAndLoginForm() {
    async function handleSubmit(event){
        event.preventDefault();
        const url=isLoginOrRegister==='register'? '/register':'/login';
-       await axios.post(url, {username, password});
+       const {data} = await axios.post(url, {username, password});
        setLoggedInUsername(username);
        setId(data.id);
 

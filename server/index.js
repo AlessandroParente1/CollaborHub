@@ -8,9 +8,9 @@ const cookieParser =require('cookie-parser');
 const bcrypt =require('bcryptjs');
 
 dotenv.config();
-mongoose.connect(process.env.MONGO_URL), (error)=>{
+mongoose.connect(process.env.MONGO_URL, (error)=>{
     if(error) throw error;
-}
+})
 
 
 const app = express();
@@ -42,7 +42,7 @@ app.get('/profile', (req, res) => {
 
 app.post('/login', async (req,res)=> {
     const {username, password} = req.body;
-    const foundUser = await User.find({username});
+    const foundUser = await User.findOne({username: username});
     if (foundUser) {
         const passOk = bcrypt.compareSync(password, foundUser[0].password);
         if (passOk) {

@@ -7,7 +7,9 @@ import {useContext} from "react";
 function App() {
 
   axios.defaults.baseURL='http://localhost:3001';
-  axios.defaults.withCredentials = true; //setta i cookie dall'api
+  axios.defaults.withCredentials = true; //Ciò significa che quando si effettuano richieste HTTP utilizzando Axios,
+                                        // il browser includerà i cookie nelle intestazioni della richiesta,
+                                        // consentendo l'autenticazione e la gestione della sessione.
 
   return (
       <UserContextProvider>
