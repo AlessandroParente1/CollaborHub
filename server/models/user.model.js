@@ -1,14 +1,16 @@
-const mongoose =require('mongoose');
+const mongoose = require("mongoose");
+const passportLocalMongoose = require("passport-local-mongoose");
 
-const UserSchema= new mongoose.Schema({
-    username: {
-        type:String,
-        unique:true //2 user non possono avere lo stesso username
-    },
-    password: String,
-},
-    {timestamps:true}
+const userSchema = new mongoose.Schema(
+    {
+        email: {
+            type: String,
+            unique: true
+        },
+    }
 );
+//Aggiunge automaticamente il field password allo schema
+userSchema.plugin(passportLocalMongoose, {usernameField: "email"}); //Specifica che il campo username è quello dello Schema ed è già stato creato
 
-const UserModel= mongoose.model('User',UserSchema);
-module.exports=UserModel;
+const User = mongoose.model("User", userSchema);
+module.exports = User;

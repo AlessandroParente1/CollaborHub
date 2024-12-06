@@ -8,7 +8,7 @@ export default function Routes(){
     const{username}=useContext(UserContext);
 
     if(username){
-        return <Chat />;
+        return 'logged in';
     }
 
     return(

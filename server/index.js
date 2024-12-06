@@ -1,90 +1,75 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const dotenv= require ('dotenv');
-const jwt =require ('jsonwebtoken');
-const User = require('./models/user.model');
 const cors =require('cors');
 const cookieParser =require('cookie-parser');
-const bcrypt =require('bcryptjs');
-
+const mongoose = require('mongoose'); //Inizializzo Mongoose
 dotenv.config();
-mongoose.connect(process.env.MONGO_URL, (error)=>{
-    if(error) throw error;
-})
 
+//Session Imports
+const User = require("./models/user.model.js");
+const passport = require("passport");
 
 const app = express();
 app.use(express.json());
 app.use(cookieParser);
-app.use(cors
-({
-    credentials:true,
-    origin:process.env.CLIENT_URL
-}));
+app.use(cors());
+app.use(express.urlencoded({extended: true})); //Affinchè possa prendere dai form i campi //secret passcode
+app.use(passport.initialize());
 
-app.get('/test', (req, res) => {
-    res.json('test ok');
+//passport
+passport.use(User.createStrategy());  //User.createStrategy() è una funzione di passport-local-mongoose che setta automaticamente una strategia
 
-})
 
-app.get('/profile', (req, res) => {
-    const {token} =req.cookies?.token;//? in caso non esiste
-    if(token) {
-        jwt.verify(token, process.env.SECRET_KEY, {}, (err, userData) => {
-            if (err) throw err;
-            else res.json(userData);
-        });
-    }else{
-        res.status(401).json('no token');//unauthorized
+//socket.io
+const http = require('http');
+// Creazione del server HTTP per usare Socket.io
+const server = http.createServer(app);
+// Aggiungi Socket.io al server
+const io = require('socket.io')(server, {
+    cors: {
+        origin: '*', // Permetti le connessioni da qualsiasi origine (per lo sviluppo)
+        methods: ['GET', 'POST']
     }
-
-})
-
-app.post('/login', async (req,res)=> {
-    const {username, password} = req.body;
-    const foundUser = await User.findOne({username: username});
-    if (foundUser) {
-        const passOk = bcrypt.compareSync(password, foundUser[0].password);
-        if (passOk) {
-            jwt.sign({userId: foundUser[0]._id, username}, process.env.SECRET_KEY, {}, (err, token) => {//le parentesi graffe sono vuote perchè vuole 4 parametri obbligatoriamente
-                if (err) {
-                    throw err
-                } else {
-                    res.cookie('token', token, {sameSite: 'none', secure: true}).status(201).json({
-                        id: foundUser[0]._id,
-
-                    });
-                }
+});
 
 
-            })
-        }
-    }
-})
+app.use('api/login',require('./routes/user.route.js'));
+app.use('api/register',require('./routes/user.route.js'));
+app.use('api/profile',require('./routes/user.route.js'));
+app.use('api/logout',require('./routes/user.route.js'));
+app.use('api/chats',require('./routes/chats.route.js'));
 
-app.post('/register', async (req, res) => {
-    const { username, password } = req.body;
-    try{
-        const hashedPassword=bcrypt.hashSync(password, 10);
-        const createdUser = await User.create({
-            username:username,
-            password:hashedPassword});
-        jwt.sign({userId:createdUser[0]._id, username}, process.env.SECRET_KEY, {},(err, token) => {//le parentesi graffe sono vuote perchè vuole 4 parametri obbligatoriamente
-            if (err) {
-                throw err
-            } else {
-                res.cookie('token', token, {sameSite:'none', secure:true}).status(201).json({
-                    id:createdUser[0]._id,
 
+mongoose.connect(process.env.MONGO_URL)
+    .then(() => {
+        console.log("Connected to database");
+
+        // Inizializza la connessione Socket.io
+        io.on('connection', (socket) => {
+            console.log("User connected: " + socket.id);
+
+            // Gestione dei messaggi (ad esempio, per la chat)
+            socket.on('send_message', (data) => {
+                console.log("Messaggio ricevuto:", data);
+                // Invia il messaggio a tutti i client connessi
+                io.emit('receive_message', data);
             });
-            }
-        })
-    }catch (err){
-        if (err) throw err;
-        res.status(500).json('error');
-    }
 
-})
+            socket.on('disconnect', () => {
+                console.log("User disconnected: " + socket.id);
+            });
+        });
+
+        // Start the Express server
+        server.listen(process.env.PORT, () => {
+            console.log(`Server listening on port ${process.env.PORT}`);
+        });
+    })
+    .catch((e) => {
+        console.log(e);
+    });
+
 
 //pass db: nE37smGqow3czJ4e
-app.listen(3001);
+
+

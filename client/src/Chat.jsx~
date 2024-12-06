@@ -2,7 +2,6 @@ import {Button} from "@mui/material";
 import {useEffect} from 'react';
 
 export default function Chat() {
-    //al mount del componente Chat
     useEffect(()=> {
         new WebSocket('ws://localhost:3001');
 
