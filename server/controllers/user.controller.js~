@@ -77,14 +77,7 @@ const logout = (req, res) => {
     });
 };
 
-const getAllUsers = async (req, res) => {
-    try {
-        const users = await User.find({}, "email"); // Recupera solo gli email
-        res.status(200).json({ success: true, users });
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
-    }
-};
 
 
-module.exports = {register, login, logout, getAllUsers};
+
+module.exports = {register, login, logout};
