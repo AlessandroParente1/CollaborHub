@@ -5,31 +5,13 @@ const jsonwebtoken = require("jsonwebtoken");
 const SECRET_KEY = process.env.SECRET_KEY || "";
 
 const register = (req, res) => {
-    const newUser = new User({email: req.body.email});
+    const newUser = new User({email: req.body.email}); //Crea l'user e gli chiede come param l'email
     User.register(newUser, req.body.password, (err, user) => {
         if (err) {
-            return res.status(500).json({success: false, error: err});
+            res.status(500).json({success: false, error: err});
+        } else {
+            res.status(200).json({success: true, message: 'Account created successfully'});
         }
-
-        // Generiamo il token dopo che l'utente è stato creato
-        const token = jsonwebtoken.sign(
-            {
-                data: {
-                    userId: user._id,
-                    email: user.email
-                },
-                exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60) // expires in 24h
-            },
-            SECRET_KEY
-        );
-
-        // Settiamo il token come cookie
-        res.cookie("token", token, { httpOnly: true, secure: process.env.NODE_ENV === "production" || false});
-
-        res.status(200).json({
-            success: true,
-            message: 'Account created successfully',
-        });
     });
 };
 
@@ -41,50 +23,28 @@ const login = (req, res) => {
                 return res.status(500).json({message: error});
             } else {
                 if (!user) {
-                    return res.status(403).json({success: false, message: "Email o password errate."});
-                }
-
-                // Generiamo il token
-                const token = jsonwebtoken.sign(
-                    {
-                        data: {
-                            userId: user._id,
-                            email: user.email
+                    res.status(403).json({success: false, message: "Email o password errate."});
+                } else {
+                    const token = jsonwebtoken.sign(
+                        {
+                            data: {
+                                userId: user._id,
+                                email: user.email
+                            },
+                            exp: new Date().setDate(new Date().getDate() + 1) // expires in 24h
                         },
-                        exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60) // expires in 24h
-                    },
-                    SECRET_KEY
-                );
-
-                // Settiamo il token come cookie
-                res.cookie("token", token, { httpOnly: true, secure: process.env.NODE_ENV === "production" });
-
-                res.status(201).json({
-                    success: true,
-                    message: "Login successful",
-                });
+                        SECRET_KEY
+                    );
+                    res.status(201).json({
+                        success: true,
+                        message: "Login successful",
+                        token: token
+                    });
+                }
             }
         })(req, res);
-};
-
-const logout = (req, res) => {
-    // Rimuoviamo il cookie con clearCookie
-    res.clearCookie("token");
-
-    res.status(200).json({
-        success: true,
-        message: "Logout successful",
-    });
-};
-
-const getAllUsers = async (req, res) => {
-    try {
-        const users = await User.find({}, "email"); // Recupera solo gli email
-        res.status(200).json({ success: true, users });
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
-    }
-};
+}
 
 
-module.exports = {register, login, logout, getAllUsers};
+
+module.exports = {register, login};

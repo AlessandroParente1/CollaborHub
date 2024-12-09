@@ -1,0 +1,11 @@
+const verifyToken = require( "../Middleware/verifyToken.js");
+const  Router =require("express");
+const createOrGetChat =require("../controllers/chats.controller.js");
+
+const router = Router();
+
+router.use(verifyToken);
+router.post("/createOrGet", createOrGetChat);
+
+
+module.exports = router;

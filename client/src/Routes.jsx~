@@ -1,7 +1,6 @@
-import RegisterAndLoginForm from './RegisterAndLoginForm.jsx'
+import RegisterAndLoginForm from './RegisterAndLogin.js'
 import {useContext} from "react";
 import {UserContext} from "./UserContext.jsx";
-import Chat from "./Chat.jsx"; //creare Chat
 
 //questo contiene cosa vogliamo far vedere
 export default function Routes(){

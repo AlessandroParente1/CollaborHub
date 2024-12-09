@@ -12,7 +12,10 @@ const passport = require("passport");
 const app = express();
 app.use(express.json());
 app.use(cookieParser);
-app.use(cors());
+app.use(cors({
+    origin:"*",  // L'indirizzo del tuo frontend
+    credentials: true  // Per i cookie (ad esempio per JWT)
+}));
 app.use(express.urlencoded({extended: true})); //Affinchè possa prendere dai form i campi //secret passcode
 app.use(passport.initialize());
 
@@ -33,11 +36,8 @@ const io = require('socket.io')(server, {
 });
 
 
-app.use('api/login',require('./routes/user.route.js'));
-app.use('api/register',require('./routes/user.route.js'));
-app.use('api/profile',require('./routes/user.route.js'));
-app.use('api/logout',require('./routes/user.route.js'));
-app.use('api/chats',require('./routes/chats.route.js'));
+app.use('api/user',require('./routes/user.route.js'));
+app.use("/api/verify", require('./routes/verify.route.js'));
 
 
 mongoose.connect(process.env.MONGO_URL)

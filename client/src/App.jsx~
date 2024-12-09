@@ -2,7 +2,7 @@
 
 function App() {
 
-    return 'logged in!';
+    return 'logged in'
 
 
 }
