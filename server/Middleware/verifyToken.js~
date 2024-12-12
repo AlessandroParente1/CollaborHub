@@ -4,7 +4,7 @@ const User = require("../models/user.model.js");
 const SECRET_KEY = process.env.SECRET_KEY || "";
 
 function verifyToken(req, res, next) {
-    const token = req.cookies.token || req.headers['token'];
+    const token = req.cookies.token; // Prendiamo il token dai cookies
 
     if (!token) {
         return res.status(401).json({error: true, message: "Token mancante"});

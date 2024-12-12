@@ -35,7 +35,7 @@ const io = require('socket.io')(server, {
     }
 });
 
-//app.use('/api/user', require('./routes/user.routes.js'));
+
 app.use('api/user',require('./routes/user.route.js'));
 app.use("/api/verify", require('./routes/verify.route.js'));
 
