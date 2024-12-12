@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, List, ListItem, ListItemText, CircularProgress, Typography } from '@mui/material';
 import axios from 'axios';
 
-const UserSidebar = () => {
+const Sidebar = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -60,4 +60,4 @@ const UserSidebar = () => {
     );
 };
 
-export default UserSidebar;
+export default Sidebar;

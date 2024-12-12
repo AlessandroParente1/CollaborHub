@@ -1,12 +1,12 @@
 import ChatInput from "./ChatInput";
-import UserSidebar from "./UserSideBar";
+import Sidebar from "./SideBar";
 
 
 function Chat ()  {
     return (
         <div className="chat">
             <ChatInput />
-            <UserSidebar />
+            <Sidebar />
 
         </div>
     );
