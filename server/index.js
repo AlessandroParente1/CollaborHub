@@ -4,40 +4,31 @@ const cors =require('cors');
 const cookieParser =require('cookie-parser');
 const mongoose = require('mongoose'); //Inizializzo Mongoose
 dotenv.config();
-
-//Session Imports
-const User = require("./models/user.model.js");
-const passport = require("passport");
-
+const http = require('http');
 const app = express();
 app.use(express.json());
-//app.use(cookieParser());
+app.use(cookieParser());
 app.use(cors({
     origin:"*",  // L'indirizzo del tuo frontend
     credentials: true  // Per i cookie (ad esempio per JWT)
 }));
 app.use(express.urlencoded({extended: true})); //Affinchè possa prendere dai form i campi //secret passcode
-app.use(passport.initialize());
-
-//passport
-passport.use(User.createStrategy());  //User.createStrategy() è una funzione di passport-local-mongoose che setta automaticamente una strategia
 
 
-//socket.io
-const http = require('http');
 // Creazione del server HTTP per usare Socket.io
 const server = http.createServer(app);
 // Aggiungi Socket.io al server
-const io = require('socket.io')(server, {
+const io = new Server(server, {
     cors: {
         origin: '*', // Permetti le connessioni da qualsiasi origine (per lo sviluppo)
-        methods: ['GET', 'POST']
+        methods: ['GET', 'POST'],
+        credentials: true,
     }
 });
 
-//app.use('/api/user', require('./routes/user.routes.js'));
 app.use('api/user',require('./routes/user.route.js'));
-app.use("/api/verify", require('./routes/verify.route.js'));
+app.use('api/message',require('./routes/message.route.js'));
+
 
 
 mongoose.connect(process.env.MONGO_URL)

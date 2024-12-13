@@ -3,29 +3,44 @@ const User = require("../models/user.model.js");
 
 const SECRET_KEY = process.env.SECRET_KEY || "";
 
-function verifyToken(req, res, next) {
-    const token = req.cookies.token; // Prendiamo il token dai cookies
+const verifyToken = async (req, res, next) => {
+    try {
+        const token = req.cookies.jwtToken;
+        if (token) {
+            jsonwebtoken.verify(token, SECRET_KEY, async (err, data) => {
+                if (err) {
+                    return (res.json({msg: "errore", errore: "Token non valido"}))
+                } else {
+                    const user = await User.findById({_id: data.id })
+                    if (user) {
+                        req.user = user; // Aggiungiamo l'utente alla richiesta
+                        next(); // Prosegui con la route
+                    } else {
+                        res.json({msg: "errore", errore: "Utente non trovato"})
+                    }}
+            })
+        }
 
-    if (!token) {
-        return res.status(401).json({error: true, message: "Token mancante"});
+        /* const decoded = jwt.verify(token, JWT_SECRET_KEY);
+         if (decoded) {
+         const user = await User.findById({_id: decoded.id});
+         if (user) {
+             req.user = user;
+             next();
+         } else {
+             res.json({msg: "errore", errore: "Utente non trovato"})
+         }
+     } else {
+         res.json({msg: "errore", errore: "Token non valido"})
+     }*/
+        else {
+            return res.status(401).json({msg: "Accesso non consentito"})
+        }
     }
-
-    jsonwebtoken.verify(token, SECRET_KEY, async (err, payload) => {
-        if (err) {
-            return res.status(401).json({error: true, message: "Token non valido"});
-        }
-
-        try {
-            const user = await User.findById(payload.data.userId);
-            if (!user) {
-                return res.status(403).json({error: true, message: "Utente non trovato"});
-            }
-            req.user = user; // Aggiungiamo l'utente alla richiesta
-            next(); // Prosegui con la route
-        } catch (err) {
-            return res.status(500).json({error: true, message: "Errore nel server"});
-        }
-    });
+    catch (err) {
+        console.log(err);
+        res.json({msg: "errore", errore: err.message})
+    }
 }
 
 module.exports = verifyToken;
