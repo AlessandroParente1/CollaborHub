@@ -4,7 +4,7 @@ import { useState } from "react";
 import  axios from 'axios';
 
 
-function ChatInput () {
+function ChatInput ({recipient}) {
 
     const [message, setMessage] = useState('');
     const [isSending, setIsSending] = useState(false);

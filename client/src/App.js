@@ -2,9 +2,9 @@ import './App.css';
 import  Chat from './pages/Chat';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-//import Login from './pages/Login';
+import Login from './pages/Login';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-//import Signup from './pages/Signup';
+import SignUp from './pages/SignUp';
 import CssBaseline from '@mui/material/CssBaseline';
 
 axios.defaults.withCredentials = true;
@@ -23,13 +23,13 @@ function App() {
 
 
     return (
-        <>//Webstorm pensa che questo sia un file .jsx
+        <>
             <CssBaseline />
             <Router>
                 <Routes>
-                    {/* <Route path="/" element={<Login />} />
-                    <Route path="/signup" element={<Signup />} />*/}
-                    <Route path="/" element={<Chat />} /> {/* dopo che abbiamo finito di vedere la chat cambiamo l'endpoint a /chat*/}
+                    <Route path="/" element={<Login />} />
+                    <Route path="/signup" element={<SignUp />} />
+                    <Route path="/home" element={<Chat />} /> {/* dopo che abbiamo finito di vedere la chat cambiamo l'endpoint a /chat*/}
                 </Routes>
             </Router>
         </>
