@@ -18,7 +18,7 @@ function ChatInput ({recipient, sender}) {
 
         setIsSending(true);
         try {
-            const response = await axios.post('localhost:5000/api/message/addMessage', {message, from: sender, to:recipient });
+            const response = await axios.post('/chat/messages', {message, from: sender, to:recipient });
             console.log('Messaggio inviato:', response.data);
             setMessage(''); // Resetta la casella di testo dopo l'invio
         } catch (error) {

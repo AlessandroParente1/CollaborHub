@@ -1,14 +1,11 @@
 import ChatInput from "../components/ChatInput";
 import Sidebar from "../components/SideBar";
+import Chat from "../components/Chat";
 import {useState} from "react";
 
 
 function View ()  {
     const [selectedUser, setSelectedUser] = useState(null);
-
-    const handleSelectUser = (user) => {
-        setSelectedUser(user); // Aggiorna lo stato con l'utente selezionato
-    };
 
     return (
         <div style={{ display: 'flex' }}>
@@ -18,7 +15,6 @@ function View ()  {
                     <div>
                         <h2>Chat con {selectedUser.username}</h2>
                         <Chat recipient={selectedUser} />
-                        <ChatInput recipient={selectedUser} />
                     </div>
                 ) : (
                     <h2>Seleziona un utente per iniziare la chat</h2>
@@ -28,4 +24,4 @@ function View ()  {
     );
 }
 
-export default Chat;
+export default View;

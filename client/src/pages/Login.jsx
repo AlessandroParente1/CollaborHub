@@ -3,6 +3,7 @@ import axios from 'axios';
 import TextField from '@mui/material/TextField';
 import { FormHelperText, Grid2, Typography, Paper, Button  } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useCurrentUser } from '../Context/CurrentUserContext';
 
 function Login() {
     const [error, setError] = useState('');  //stato per gestire errori durante il login
@@ -10,6 +11,9 @@ function Login() {
         username: '',
         password: ''
     })
+
+    const {login}=useCurrentUser();
+
     const handleInput = (e) => {
         setFormData({
             ...formData,
@@ -23,6 +27,7 @@ function Login() {
         data.append('password', formData.password);
         try {
             const response = await axios.post('http://localhost:5000/api/user/login', data);
+            login(response.data._id);
             console.log(response.data);
             window.location.href = '/home'
         } catch (err) {

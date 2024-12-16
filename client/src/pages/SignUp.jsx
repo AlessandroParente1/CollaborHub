@@ -3,7 +3,7 @@ import axios from 'axios';
 import TextField from '@mui/material/TextField';
 import { FormHelperText, Grid2, Typography, Paper, Button } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/AccountCircle';
-
+import {useCurrentUser} from '../Context/CurrentUserContext';
 function SignUp () {
     const [error, setError] = useState('');
     const [formData, setFormData] = useState({
@@ -11,6 +11,9 @@ function SignUp () {
         username: '',
         password: ''
     })
+
+    const {login} =useCurrentUser();
+
     const handleInput = (e) => {
         setFormData({
             ...formData,
@@ -29,6 +32,7 @@ function SignUp () {
                     'Content-Type': 'application/json'
                 }
             });
+            login(response.data._id);
             window.location.href = '/home'
             console.log(response.data);
         } catch (err) {

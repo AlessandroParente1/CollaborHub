@@ -62,7 +62,7 @@ const login = async (req, res) => {
                 sameSite: 'strict',
                 expires: new Date(Date.now() + 1000*60*60*24)
             }).json({msg: "Accesso effettuato", user: {
-                    id: user._id,
+                    _id: user._id,
                     username: user.username,
                     email: user.email
                 }});

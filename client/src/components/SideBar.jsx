@@ -1,6 +1,6 @@
 // Importazioni necessarie
 import React, { useState, useEffect } from 'react';
-import { Box, List, ListItem, ListItemText, CircularProgress, Typography } from '@mui/material';
+import {Box, List, ListItem, ListItemText, CircularProgress, Typography, Button} from '@mui/material';
 import axios from 'axios';
 
 function Sidebar ({onSelectUser}) {
@@ -21,6 +21,17 @@ function Sidebar ({onSelectUser}) {
         }
     };
 
+    // Funzione per fare il logout (chiamata al backend)
+    const handleLogout = async () => {
+        try {
+            await axios.post('http://localhost:5000/api/user/logout');  // Chiamata al backend
+            console.log('Logout effettuato');
+            window.location.href = '/';
+        } catch (err) {
+            console.error('Errore durante il logout:', err);
+        }
+    };
+
     // Effetto per chiamare l'API quando il componente viene montato
     useEffect(() => {
         fetchUsers();
@@ -38,6 +49,7 @@ function Sidebar ({onSelectUser}) {
                 backgroundColor: '#f4f4f4',
                 overflowY: 'auto',
                 padding: 2,
+                justifyContent:'space-between'
             }}
         >
             <Typography variant="h6" sx={{ marginBottom: 2 }}>
@@ -50,14 +62,32 @@ function Sidebar ({onSelectUser}) {
             ) : (
                 <List>
                     {users.map((user) => (
-                        <ListItem key={user._id} button onClick={() => onSelectUser(users)}>
+                        <ListItem key={user._id} button onClick={() => onSelectUser(user)}>
                             <ListItemText primary={user.username} />
                         </ListItem>
                     ))}
                 </List>
             )}
+
+        <Button
+                onClick={handleLogout}
+                sx={{
+                    position: 'absolute',
+                    bottom: 20,  // Posiziona il pulsante in basso
+                    left: '50%',
+                    transform: 'translateX(-50%)',  // Centra il pulsante orizzontalmente
+
+                }}
+                variant="contained"
+                color="secondary"
+            >
+            Logout
+        </Button>
+
         </Box>
+
+
     );
-};
+}
 
 export default Sidebar;

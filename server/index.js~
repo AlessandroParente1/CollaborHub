@@ -9,16 +9,18 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin:"*",  // L'indirizzo del tuo frontend
-    credentials: true  // Per i cookie (ad esempio per JWT)
+    origin:"http://localhost:3000",  // L'indirizzo del frontend
+    credentials: true  // Per i cookie
 }));
 app.use(express.urlencoded({extended: true})); //Affinchè possa prendere dai form i campi //secret passcode
 
 
 
-
+app.get('/', (req, res) => {
+    res.send('Server is running');
+});
 app.use('/api/user',require('./routes/user.route.js'));
-app.use('/api/message',require('./routes/message.route.js'));
+app.use('/api/home',require('./routes/message.route.js'));
 
 
 
