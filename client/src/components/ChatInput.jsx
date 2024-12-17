@@ -1,13 +1,16 @@
 import  { TextField, Button , Box}  from "@mui/material";
 import React from "react";
 import { useState } from "react";
-import  axios from 'axios';
-
+import { io } from "socket.io-client";
 
 function ChatInput ({recipient, sender}) {
 
     const [message, setMessage] = useState('');
     const [isSending, setIsSending] = useState(false);
+
+    const socket = io("http://localhost:5000", {
+        withCredentials: true,
+    });
 
     // Funzione per inviare il messaggio
     const sendMessage = async () => {
@@ -17,15 +20,15 @@ function ChatInput ({recipient, sender}) {
         }
 
         setIsSending(true);
-        try {
-            const response = await axios.post('localhost:5000/api/message/addMessage', {message, from: sender, to:recipient });
-            console.log('Messaggio inviato:', response.data);
-            setMessage(''); // Resetta la casella di testo dopo l'invio
-        } catch (error) {
-            console.error('Errore durante l invio del messaggio:', error);
-        } finally {
-            setIsSending(false);
-        }
+        // Emitting the 'send-msg' event to the server
+        socket.emit("send-msg", {
+            message,
+            from: sender,
+            to: recipient,
+        });
+
+        setMessage(''); // Resetta la casella di testo dopo l'invio
+        setIsSending(false);
     };
 
 
