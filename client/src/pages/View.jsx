@@ -1,10 +1,9 @@
-import ChatInput from "../components/ChatInput";
 import Sidebar from "../components/SideBar";
 import Chat from "../components/Chat";
 import {useState} from "react";
 
 
-function View ()  {
+function View ({userId})  {
     const [selectedUser, setSelectedUser] = useState(null);
 
     return (
@@ -14,7 +13,7 @@ function View ()  {
                 {selectedUser ? (
                     <div>
                         <h2>Chat con {selectedUser.username}</h2>
-                        <Chat selectedUser={selectedUser} />
+                        <Chat selectedUser={selectedUser} userId={userId} />
                     </div>
                 ) : (
                     <h2>Seleziona un utente per iniziare la chat</h2>

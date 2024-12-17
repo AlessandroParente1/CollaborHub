@@ -18,7 +18,7 @@ function ChatInput ({recipient, sender}) {
 
         setIsSending(true);
         try {
-            const response = await axios.post('/chat/messages', {message, from: sender, to:recipient });
+            const response = await axios.post('localhost:5000/api/message/addMessage', {message, from: sender, to:recipient });
             console.log('Messaggio inviato:', response.data);
             setMessage(''); // Resetta la casella di testo dopo l'invio
         } catch (error) {
@@ -32,18 +32,7 @@ function ChatInput ({recipient, sender}) {
     return (
 
         <Box
-            sx={{
-                position: 'fixed',
-                bottom: 0,
-                right: 0,
-                width: '80%', //4/5 della larghezza della finestra
-                display: 'flex',
-                alignItems: 'center',
-                gap: 2,
-                padding: 2,
-                borderTop: '1px solid #ddd',
-                backgroundColor: '#f9f9f9',
-            }}
+            sx={{position: 'fixed', bottom: 0, right: 0, left:'20vw', width: '80vw', display: 'flex', alignItems: 'center', gap: 2,  padding: 2, borderTop: '1px solid #ddd', backgroundColor: '#f9f9f9' }}
         >
             <TextField
                 label="Scrivi un messaggio"

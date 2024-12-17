@@ -31,29 +31,8 @@ function ChatInput ({recipient, sender}) {
 
     return (
 
-        <Box
-            sx={{
-                position: 'fixed',
-                bottom: 0,
-                right: 0,
-                width: '80%', //4/5 della larghezza della finestra
-                display: 'flex',
-                alignItems: 'center',
-                gap: 2,
-                padding: 2,
-                borderTop: '1px solid #ddd',
-                backgroundColor: '#f9f9f9',
-            }}
-        >
-            <TextField
-                label="Scrivi un messaggio"
-                variant="outlined"
-                value={message}
-                sx={{
-                    width: '100%',
-                    maxWidth: '600px',
-
-                }}
+        <Box sx={{position: 'fixed', bottom: 0, right: 0, left:'20vw', width: '80vw', display: 'flex', alignItems: 'center', gap: 2,  padding: 2, borderTop: '1px solid #ddd', backgroundColor: '#f9f9f9' }}>
+            <TextField label="Scrivi un messaggio" variant="outlined" value={message} sx={{width: '100%',  maxWidth: '600px' }}
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyUp={(e) => {
                     if (e.key === 'Enter' && !isSending) {
@@ -62,12 +41,7 @@ function ChatInput ({recipient, sender}) {
                 }}
                 disabled={isSending}
             />
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={sendMessage}
-                disabled={isSending}
-            >
+            <Button variant="contained" color="primary" onClick={sendMessage} disabled={isSending} >
                 {isSending ? 'Invio...' : 'Invia'}
             </Button>
         </Box>

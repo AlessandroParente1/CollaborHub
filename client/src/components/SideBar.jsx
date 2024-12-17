@@ -43,8 +43,8 @@ function Sidebar ({onSelectUser}) {
                 position: 'fixed',
                 top: 0,
                 left: 0,
-                width: '20%', // 1/5 della larghezza della finestra
-                height: '100%',
+                width: '20vw', // 1/5 della larghezza della finestra
+                height: '100vh',//occupa tutta l'altezza
                 borderRight: '1px solid #ddd',
                 backgroundColor: '#f4f4f4',
                 overflowY: 'auto',
