@@ -1,5 +1,6 @@
 import  { TextField, Button , Box, Typography}  from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
+import { useState } from "react";
 
 function ChatInput ({recipient, sender, socket}) {
 
@@ -9,15 +10,13 @@ function ChatInput ({recipient, sender, socket}) {
 
     // Funzione per inviare il messaggio
     const sendMessage = async () => {
-        //Controlla che il messaggio non sia vuoto
         if (!message.trim()) {
             setError('Il messaggio non può essere vuoto.');
             return;
         }
 
         setIsSending(true);
-
-        // Invia il messaggio al server tramite il socket
+        // Emitting the 'send-msg' event to the server
         socket.emit("send-msg", {
             message,
             from: sender,

@@ -38,20 +38,7 @@ function Sidebar ({onSelectUser}) {
     }, []);
 
     return (
-        <Box
-            sx={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                width: '20vw', // 1/5 della larghezza della finestra
-                height: '100vh',//occupa tutta l'altezza
-                borderRight: '1px solid #ddd',
-                backgroundColor: '#f4f4f4',
-                overflowY: 'auto',
-                padding: 2,
-                justifyContent:'space-between'
-            }}
-        >
+        <Box>
             <Typography variant="h6" sx={{ marginBottom: 2 }}>
                 Utenti Online
             </Typography>
@@ -69,7 +56,7 @@ function Sidebar ({onSelectUser}) {
                 </List>
             )}
 
-        <Button
+            <Button
                 onClick={handleLogout}
                 sx={{
                     position: 'absolute',
@@ -81,8 +68,8 @@ function Sidebar ({onSelectUser}) {
                 variant="contained"
                 color="secondary"
             >
-            Logout
-        </Button>
+                Logout
+            </Button>
 
         </Box>
 

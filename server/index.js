@@ -7,6 +7,7 @@ dotenv.config();
 const app = express();
 const http = require('http');
 const {Server} = require('socket.io');
+const {addMessage} = require("./controllers/message.controller");
 
 app.use(express.json());
 app.use(cookieParser());
@@ -31,9 +32,9 @@ const db = mongoose.connection;
 db.once("open", () => {console.log("Database connesso con successo")});
 
 
-app.listen(process.env.PORT, () => {console.log("Server avviato su porta " + process.env.PORT);});
-
-const server = http.createServer(app);
+const server = app.listen(process.env.PORT,()=>{
+    console.log(`Server running on Port ${process.env.PORT}`);
+})
 const io = new Server(server, {
     cors: {
         origin: 'http://localhost:3000',
@@ -53,25 +54,40 @@ io.on("connection", (socket)=>{
         onlineUsers.set(userId, socket.id);
     })
 
-    //Quando un utente invia un messaggio
-    socket.on("send-msg", (data)=>{
-        const sendUnderSocket = onlineUsers.get(data.to);
-        //verifica che il destinatario sia online
-        if(sendUnderSocket){
-            //invia il messaggio
-            socket.to(sendUnderSocket).emit("msg-receive", data.message)
-        }
-    })
+    socket.on("send-msg", async (data) => {
+        const { from, to, message } = data;
 
-    //invia una notifica
-    socket.on("send-notification", (data)=>{
-        const sendUnderSocket = onlineUsers.get(data.to);
-        //verifica che il destinatario sia online
-        if(sendUnderSocket){
-            //invia la notifica
-            socket.to(sendUnderSocket).emit("notification-receive",data.message)
+        try {
+            // Salva il messaggio nel database
+            await addMessage({
+                body: {
+                    from,
+                    to,
+                    message,
+                },
+            });
+
+            const recipientSocketId = onlineUsers.get(to);
+            if (recipientSocketId) {
+                socket.to(recipientSocketId).emit("msg-recieve", {
+                    fromSelf: false,
+                    message,
+                });
+            }
+
+        } catch (error) {
+            console.error("Errore durante l'invio del messaggio:", error);
         }
-    })
+    });
+
+    socket.on("disconnect", () => {
+        onlineUsers.forEach((value, key) => {
+            if (value === socket.id) {
+                onlineUsers.delete(key);
+            }
+        });
+    });
+
 
 })
 

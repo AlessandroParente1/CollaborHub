@@ -7,10 +7,7 @@ function View ({userId})  {
     const [selectedUser, setSelectedUser] = useState(null);
 
     return (
-        <div style={{
-            display: "grid",
-            gridTemplateColumns: "25% 75%",
-        }}>
+        <div className='container'>
             <Sidebar onSelectUser={(user) => setSelectedUser(user)} />
             <div style={{ flex: 1, padding: 16 }}>
                 {selectedUser ? (

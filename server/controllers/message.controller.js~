@@ -56,7 +56,7 @@ const addMessage = async (req, res) => {
             message: { text: message },
             // users: [from, to],
             sender: from,
-            receiver: to,
+            reciever: to,
         });
 
         if (data) return res.json({ msg: "Message added successfully." });

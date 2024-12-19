@@ -1,0 +1,19 @@
+.sent {
+    text-align: right;
+    background-color: #daf8cb;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 5px 0;
+    max-width: 70%;
+    margin-left: auto;
+}
+
+.received {
+    text-align: left;
+    background-color: #f1f0f0;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 5px 0;
+    max-width: 70%;
+    margin-right: auto;
+}
