@@ -49,45 +49,23 @@ io.on("connection", (socket)=>{
     console.log('connect to socket', socket.id);
     global.chatSocket = socket;
 
-    //Quando un utente fa il login lo aggiungo agli onlineUsers
     socket.on("add-user", (userId)=>{
         onlineUsers.set(userId, socket.id);
     })
 
-    socket.on("send-msg", async (data) => {
-        const { from, to, message } = data;
-
-        try {
-            // Salva il messaggio nel database
-            await addMessage({
-                body: {
-                    from,
-                    to,
-                    message,
-                },
-            });
-
-            const recipientSocketId = onlineUsers.get(to);
-            if (recipientSocketId) {
-                socket.to(recipientSocketId).emit("msg-recieve", {
-                    fromSelf: false,
-                    message,
-                });
-            }
-
-        } catch (error) {
-            console.error("Errore durante l'invio del messaggio:", error);
+    socket.on("send-msg", (data)=>{
+        const sendUnderSocket = onlineUsers.get(data.to);
+        if(sendUnderSocket){
+            socket.to(sendUnderSocket).emit("msg-recieve", data.message)
         }
-    });
+    })
 
-    socket.on("disconnect", () => {
-        onlineUsers.forEach((value, key) => {
-            if (value === socket.id) {
-                onlineUsers.delete(key);
-            }
-        });
-    });
-
+    socket.on("send-notification", (data)=>{
+        const sendUnderSocket = onlineUsers.get(data.to);
+        if(sendUnderSocket){
+            socket.to(sendUnderSocket).emit("notification-recieve",data.message)
+        }
+    })
 
 })
 

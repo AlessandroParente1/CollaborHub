@@ -32,8 +32,9 @@ const db = mongoose.connection;
 db.once("open", () => {console.log("Database connesso con successo")});
 
 
-
-const server = http.createServer(app);
+const server = app.listen(process.env.PORT,()=>{
+    console.log(`Server running on Port ${process.env.PORT}`);
+})
 const io = new Server(server, {
     cors: {
         origin: 'http://localhost:3000',
@@ -89,9 +90,6 @@ io.on("connection", (socket)=>{
 
 
 })
-
-server.listen(process.env.PORT, () => {console.log("Server avviato su porta " + process.env.PORT);});
-
 
 //pass db: nE37smGqow3czJ4e
 

@@ -1,52 +1,32 @@
-import  { TextField, Button , Box, Typography}  from "@mui/material";
 import React, { useState } from "react";
+import { IoMdSend } from "react-icons/io";
 
-function ChatInput ({recipient, sender, socket}) {
+function ChatInput ({sendMessage}) {
 
     const [message, setMessage] = useState('');
-    const [isSending, setIsSending] = useState(false);
-    const [error, setError] = useState('');
 
-    // Funzione per inviare il messaggio
-    const sendMessage = async () => {
-        //Controlla che il messaggio non sia vuoto
-        if (!message.trim()) {
-            setError('Il messaggio non può essere vuoto.');
-            return;
+    const sendChat = (e)=>{
+        e.preventDefault();
+        if(message.length > 0){
+            sendMessage(message)
+            setMessage("");
         }
-
-        setIsSending(true);
-
-        // Invia il messaggio al server tramite il socket
-        socket.emit("send-msg", {
-            message,
-            from: sender,
-            to: recipient,
-        });
-
-        setMessage(''); // Resetta la casella di testo dopo l'invio
-        setIsSending(false);
-    };
-
+    }
 
     return (
 
-        <Box>
-            <TextField label="Scrivi un messaggio" variant="outlined" value={message} sx={{width: '100%',  maxWidth: '600px' }}
-                       onChange={(e) => setMessage(e.target.value)}
-                       onKeyUp={(e) => {
-                           if (e.key === 'Enter' && !isSending) {
-                               sendMessage();
-                           }
-                       }}
-                       disabled={isSending}
-            />
-            <Button variant="contained" color="primary" onClick={sendMessage} disabled={isSending} >
-                {isSending ? 'Invio...' : 'Invia'}
-            </Button>
+        <form onSubmit={(e) => sendChat(e)} className="input-container">
 
-            {error && <Typography color="error" sx={ {marginTop: 1 }}>{error}</Typography>}
-        </Box>
+            <input
+                type="text"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder='Message'
+            />
+            <button type='submit'>
+                <IoMdSend/>
+            </button>
+        </form>
     );
 }
 

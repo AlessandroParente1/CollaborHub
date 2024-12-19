@@ -1,88 +1,84 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, CircularProgress } from '@mui/material';
+import { Box } from '@mui/material';
 import axios from 'axios';
 import ChatInput from './ChatInput';
-import { io } from 'socket.io-client';
 import './Chat.css';
 
-function Chat({ selectedUser, userId }) {
+function Chat({ selectedUser, userId, socket }) {
+
     const [messages, setMessages] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [incoming, setIncoming] = useState(true);
 
-    // Connessione al server Socket.io
-    const socket = io("http://localhost:5000", {
-        withCredentials: true,
-    });
-
-    useEffect(() => {
-        // Aggiungi l'utente agli onlineUsers quando si connette
-        socket.emit("add-user", userId);
-
-        // Funzione per recuperare i messaggi iniziali
-        const fetchMessages = async () => {
-            if (selectedUser && userId) {
-                try {
-                    const response = await axios.post('http://localhost:5000/api/message/getAllMessages', {
-                        from: userId,
-                        to: selectedUser._id,
-                    });
-                    setMessages(response.data);
-                    setLoading(false);
-                } catch (err) {
-                    console.error('Errore nel recupero dei messaggi:', err);
-                    setLoading(false);
-                }
-            }
-        };
-
-        fetchMessages();
-
-        // Ascolta i nuovi messaggi in arrivo
-        socket.on("msg-recieve", (newMessage) => {
-            setMessages((prevMessages) => [...prevMessages, newMessage]);
+    const getAllMessages =async()=>{
+        const res = await axios.get(`http://localhost:5000/api/message/getAllMessages`,{
+            from :userId,
+            to :selectedUser._id
         });
 
-        return () => {
-            socket.disconnect();  // Disconnessione quando il componente viene smontato
-        };
-    }, [selectedUser, userId, socket]);
+        console.log(res.data);
+        setMessages(res.data);
+
+    }
+
+    useEffect(() => {
+        if(selectedUser){
+            getAllMessages();
+        }
+    },[selectedUser])
+
+    const handleSend = async(msg) =>{
+
+        await axios.post('http://localhost:5000/api/message/addMessage',{
+            from : userId,
+            to : selectedUser._id,
+            message : msg
+        });
+        socket.current.emit("send-msg",{
+            to : selectedUser._id,
+            from : userId,
+            message : msg
+        });
+
+        socket.current.emit("send-notification",{
+            to : selectedUser._id,
+            from : userId,
+            message : msg
+        });
+
+        const updatedMessages = [...messages];
+        updatedMessages.push({fromSelf : true, message : msg});
+        setMessages(updatedMessages)
+    }
+
+    useEffect(()=>{
+            if(socket.current){
+                socket.current.on("msg-recieve", (msg)=>{
+                    setIncoming({fromSelf : false, message: msg})
+                });
+            }
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        []);
+
+    useEffect(()=>{
+        if (incoming) {
+            setMessages((prev) => [...prev, incoming]);
+        }
+    },[incoming]);
 
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-            {/* Corpo della chat */}
-            <Box
-                sx={{
-                    flex: 1,
-                    overflowY: 'auto',
-                    padding: 2,
-                    backgroundColor: '#f5f5f5',
-                }}
-            >
-                {loading ? (
-                    <CircularProgress />
-                ) : messages.length === 0 ? (
-                    <Typography>Nessun messaggio ancora.</Typography>
-                ) : (
-                    messages.map((msg, index) => (
-                        <Box
-                            key={index}
-                            className={msg.fromSelf ? 'sent' : 'received'}
-                        >
-                            {msg.message}
-                        </Box>
-                    ))
-                )}
-            </Box>
-
-            {/* Componente di input per l'invio dei messaggi */}
+            <div className="chat-messages">
+                {messages.map((message, index) => (
+                    <div key={index} className={`message ${message.fromSelf ? 'sent' : 'received'}`}>
+                        <p>{message.message}</p>
+                    </div>
+                ))}
+            </div>
             {selectedUser && (
                 <Box sx={{ padding: 2, borderTop: '1px solid #ddd' }}>
-                    <ChatInput
-                        recipient={selectedUser._id}
-                        sender={userId}
-                        socket={socket}
-                    />
+                    <ChatInput sendMessage={handleSend} />
                 </Box>
             )}
         </Box>
