@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import { FormHelperText, Grid2, Typography, Paper, Button } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/AccountCircle';
 
-function SignUp ({setUserId}) {
+function SignUp () {
     const [error, setError] = useState('');
     const [formData, setFormData] = useState({
         email: '',
@@ -31,7 +31,7 @@ function SignUp ({setUserId}) {
                     'Content-Type': 'application/json'
                 }
             });
-            setUserId(response.data._id);
+            localStorage.setItem('user', JSON.stringify(response.data.user));
             window.location.href = '/home'
             console.log(response.data);
         } catch (err) {

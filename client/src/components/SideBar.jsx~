@@ -18,7 +18,7 @@ function Sidebar ({onSelectUser, loggedUser, users}) {
     };
 
     return (
-        <Box sx={{ position: 'relative', height: '100vh', padding: 2 }}>
+        <Box>
             <Typography variant="h6" sx={{ marginBottom: 2 }}>
                 Online Users
             </Typography>

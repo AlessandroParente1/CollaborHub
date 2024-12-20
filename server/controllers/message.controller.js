@@ -1,7 +1,8 @@
 const Message = require("../models/message.model");
 
 const getAllMessages = async (req, res) => {
-    const {from, to}=req.body;
+
+    const {from, to}=req.query;
 
     try {
         const messages = await Message.find(
@@ -29,10 +30,10 @@ const getAllMessages = async (req, res) => {
 
          */
         //Nota 1
-        const TransformedMessages = messages.map((message)=>{
+        const TransformedMessages = messages.map((msg)=>{
             return{
-                fromSelf:message.sender.toString() === from, // Se il mittente è l'utente attuale
-                message: message.message.text, //estrae il campo text dall'oggetto message contenuto in message
+                fromSelf:msg.sender.toString() === from, // Se il mittente è l'utente attuale
+                message: msg.message, //estrae il campo text dall'oggetto message contenuto in message
             }
 
         })

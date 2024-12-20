@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import { FormHelperText, Grid2, Typography, Paper, Button  } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-function Login({setUserId}) {
+function Login() {
     const [error, setError] = useState('');  //stato per gestire errori durante il login
     const [formData, setFormData] = useState({
         username: '',
@@ -24,7 +24,7 @@ function Login({setUserId}) {
         data.append('password', formData.password);
         try {
             const response = await axios.post('http://localhost:5000/api/user/login', data);
-            setUserId(response.data._id);
+            localStorage.setItem('user', JSON.stringify(response.data.user));
             console.log(response.data);
             window.location.href = '/home'
         } catch (err) {

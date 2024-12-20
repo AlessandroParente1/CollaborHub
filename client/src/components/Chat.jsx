@@ -4,50 +4,47 @@ import axios from 'axios';
 import ChatInput from './ChatInput';
 import './Chat.css';
 
-function Chat({ selectedUser, userId, socket }) {
-    let interval;
+function Chat({ selectedUser, socket }) {
+
     const [messages, setMessages] = useState([]);
 
     const getAllMessages =async()=>{
-        const res = await axios.get(`http://localhost:5000/api/message/getAllMessages`,{
-            from :userId,
-            to :selectedUser._id
-        });
+
+        const loggedUser =await JSON.parse(localStorage.getItem("user"));
+
+        const res = await axios.get(
+            `http://localhost:5000/api/message/getAllMessages?from=${loggedUser._id}&to=${selectedUser._id}`,{});
 
         console.log(res.data);
         setMessages(res.data);
 
     }
-
-    // Gestione del polling
+    //recupera i messaggi di ogni chat a seconda di quale user hai cliccato nella SideBar
     useEffect(() => {
         if (selectedUser) {
-            getAllMessages(); // Chiamata iniziale
-            interval = setInterval(() => {
-                getAllMessages();
-            }, 50000000); // Polling ogni 5 secondi
+            console.log('Fetching messages for user', selectedUser);
+            getAllMessages();
         }
-        return () => {
-            clearInterval(interval); // Cleanup
-        };
     }, [selectedUser]);
 
     const handleSend = async(msg) =>{
 
+        const loggedUser =await JSON.parse(localStorage.getItem("user"));
+
         await axios.post('http://localhost:5000/api/message/addMessage',{
-            from : userId,
+            from : loggedUser._id,
             to : selectedUser._id,
             message : msg
         });
         socket.current.emit("send-msg",{
             to : selectedUser._id,
-            from : userId,
+            from : loggedUser._id,
             message : msg
         });
 
         socket.current.emit("send-notification",{
             to : selectedUser._id,
-            from : userId,
+            from : loggedUser._id,
             message : msg
         });
 

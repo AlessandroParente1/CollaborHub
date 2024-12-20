@@ -11,8 +11,6 @@ function Login() {
         password: ''
     })
 
-    const {login}=useCurrentUser();
-
     const handleInput = (e) => {
         setFormData({
             ...formData,
@@ -26,7 +24,7 @@ function Login() {
         data.append('password', formData.password);
         try {
             const response = await axios.post('http://localhost:5000/api/user/login', data);
-            login(response.data._id);
+            localStorage.setItem('user', JSON.stringify(response.data));
             console.log(response.data);
             window.location.href = '/home'
         } catch (err) {
