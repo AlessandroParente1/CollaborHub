@@ -8,7 +8,9 @@ import {io} from "socket.io-client";
 function View ({userId})  {
     const [selectedUser, setSelectedUser] = useState(null);
     const socket=useRef(null);
-    console.log(userId);
+
+
+
     useEffect(()=>{
             socket.current = io('localhost:5000');
             socket.current.emit("add-user", userId);

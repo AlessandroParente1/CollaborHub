@@ -1,6 +1,6 @@
 .sent {
     text-align: right;
-    background-color: #25D366;
+    background-color: greenyellow;
     padding: 10px;
     border-radius: 10px;
     max-width: 70%;

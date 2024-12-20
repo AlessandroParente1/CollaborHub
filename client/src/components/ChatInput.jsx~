@@ -16,8 +16,20 @@ function ChatInput ({sendMessage}) {
 
     return (
 
-        <Box component="form" onSubmit={(e) => sendChat(e)} sx={{ display: 'flex', alignItems: 'center' }}>
-            <TextField type="string"  value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Message" fullWidth variant="outlined" sx={{ marginRight: 1 }}/>
+        <Box
+            component="form"
+            onSubmit={(e) => sendChat(e)}
+            sx={{ display: 'flex', alignItems: 'center' }}
+        >
+            <TextField
+                type="string"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Message"
+                fullWidth
+                variant="outlined"
+                sx={{ marginRight: 1 }}
+            />
             <IconButton type="submit" color="primary">
                 <IoMdSend />
             </IconButton>

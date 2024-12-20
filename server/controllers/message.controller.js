@@ -53,11 +53,11 @@ const addMessage = async (req, res) => {
     try {
         const { from, to, message } = req.body;
         const data = await Message.create({
-            message: { text: message },
+            message: message,
             // users: [from, to],
             sender: from,
             receiver: to,
-        });
+        },{});
 
         if (data) return res.json({ msg: "Message added successfully." });
         else return res.json({ msg: "Failed to add message to the database" });

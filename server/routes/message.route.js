@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const verifyToken = require("../Middleware/verifyToken.js");
 
-router.post('/addMessage', addMessage);
-router.get('/getAllMessages', getAllMessages);
+router.post('/addMessage',verifyToken, addMessage);
+router.get('/getAllMessages',verifyToken, getAllMessages);
 
 module.exports = router;

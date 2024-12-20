@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {Box, List, ListItem, ListItemText, CircularProgress, Typography, Button} from '@mui/material';
 import axios from 'axios';
 
-function Sidebar ({onSelectUser}) {
+function Sidebar ({onSelectUser, userId}) {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -48,23 +48,17 @@ function Sidebar ({onSelectUser}) {
                 <Typography color="error">{error}</Typography>
             ) : (
                 <List>
-                    {users.map((user) => (
-                        <ListItem key={user._id} button onClick={() => onSelectUser(user)}>
-                            <ListItemText primary={user.username} />
-                        </ListItem>
-                    ))}
+                    {users //questo filtro sembra non funzionare (bisogna capire perchè)
+                        .filter((user) => user._id !== userId) // Filtra gli utenti per escludere l'utente corrente
+                        .map((user) => (
+                            <ListItem key={user._id} button onClick={() => onSelectUser(user)}>
+                                <ListItemText primary={user.username} />
+                            </ListItem>
+                        ))}
                 </List>
             )}
             <Button
-                onClick={handleLogout}
-                sx={{
-                    position: 'absolute',
-                    bottom: 20,
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                }}
-                variant="contained"
-                color="secondary"
+                onClick={handleLogout} sx={{position: 'absolute',bottom: 20,left: '50%',transform: 'translateX(-50%)',}} variant="contained" color="secondary"
             >
                 Logout
             </Button>
