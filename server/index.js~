@@ -49,8 +49,8 @@ io.on("connection", (socket)=>{
     console.log('connect to socket', socket.id);
     global.chatSocket = socket;
 
-    socket.on("add-user", (user._id)=>{
-        onlineUsers.set(user._id, socket.id);
+    socket.on("add-user", (userId)=>{
+        onlineUsers.set(userId, socket.id);
     })
 
     socket.on("send-msg", (data)=>{

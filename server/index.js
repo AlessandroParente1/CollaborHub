@@ -56,14 +56,14 @@ io.on("connection", (socket)=>{
     socket.on("send-msg", (data)=>{
         const sendUnderSocket = onlineUsers.get(data.to);
         if(sendUnderSocket){
-            socket.to(sendUnderSocket).emit("msg-recieve", data.message)
+            socket.to(sendUnderSocket).emit("msg-receive", data.message)
         }
     })
 
     socket.on("send-notification", (data)=>{
         const sendUnderSocket = onlineUsers.get(data.to);
         if(sendUnderSocket){
-            socket.to(sendUnderSocket).emit("notification-recieve",data.message)
+            socket.to(sendUnderSocket).emit("notification-receive",data.message)
         }
     })
 

@@ -48,6 +48,7 @@ function Chat({ selectedUser, socket }) {
             message : msg
         });
 
+        //quando Mando un messaggio da un utente lo aggiungi alla lista
         const updatedMessages = [...messages];
         updatedMessages.push({fromSelf : true, message : msg});
         setMessages(updatedMessages)
@@ -56,14 +57,16 @@ function Chat({ selectedUser, socket }) {
     // Ricevi messaggi in tempo reale tramite socket
     useEffect(() => {
         if (socket.current) {
-            socket.current.on('msg-recieve', (msg) => {
+            socket.current.on('msg-receive', (msg) => {
+                //quando Ricevo un messaggio da un utente lo aggiungi alla lista
                 setMessages((prev) => [...prev, { fromSelf: false, message: msg }]);
             });
         }
 
         return () => {
             if (socket.current) {
-                socket.current.off('msg-recieve');
+                //Quando l'evento msg-receive viene emesso, non voglio più che questa funzione venga chiamata (smettila di ascoltare)
+                socket.current.off('msg-receive');
             }
         };
     }, [socket]);
