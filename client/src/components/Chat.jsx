@@ -7,6 +7,7 @@ import './Chat.css';
 function Chat({ selectedUser, socket }) {
 
     const [messages, setMessages] = useState([]);
+    const [isTyping, setIsTyping] = useState(false);
 
     const getAllMessages =async()=>{
 
@@ -54,6 +55,24 @@ function Chat({ selectedUser, socket }) {
         setMessages(updatedMessages)
     }
 
+    const notifyTyping = async() => {
+        const loggedUser =await JSON.parse(localStorage.getItem("user"));
+
+        socket.current.emit("user-typing",{
+            to : selectedUser._id,
+            from : loggedUser._id
+        });
+    }
+
+    const stoppedTyping = async() => {
+        const loggedUser =await JSON.parse(localStorage.getItem("user"));
+
+        socket.current.emit("user-stopped-typing",{
+            to : selectedUser._id,
+            from : loggedUser._id
+        });
+    }
+
     // Ricevi messaggi in tempo reale tramite socket
     useEffect(() => {
         if (socket.current) {
@@ -61,12 +80,23 @@ function Chat({ selectedUser, socket }) {
                 //quando Ricevo un messaggio da un utente lo aggiungi alla lista
                 setMessages((prev) => [...prev, { fromSelf: false, message: msg }]);
             });
+
+            socket.current.on("user-typing", (from) => {
+                setIsTyping(true);
+            })
+
+            socket.current.on("user-stopped-typing", (from) => {
+                setIsTyping(false);
+            })
+
         }
 
         return () => {
             if (socket.current) {
                 //Quando l'evento msg-receive viene emesso, non voglio più che questa funzione venga chiamata (smettila di ascoltare)
                 socket.current.off('msg-receive');
+                socket.current.off("user-typing");
+                socket.current.off("user-stopped-typing");
             }
         };
     }, [socket]);
@@ -80,10 +110,11 @@ function Chat({ selectedUser, socket }) {
                         <p>{message.message}</p>
                     </div>
                 ))}
+                {isTyping && <p> Typing...</p>}
             </div>
             {selectedUser && (
                 <Box sx={{ padding: 2, borderTop: '1px solid #ddd' }}>
-                    <ChatInput sendMessage={handleSend} />
+                    <ChatInput sendMessage={handleSend} notifyTyping={notifyTyping} stoppedTyping={stoppedTyping} />
                 </Box>
             )}
         </Box>

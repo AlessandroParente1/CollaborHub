@@ -67,6 +67,14 @@ io.on("connection", (socket)=>{
         }
     })
 
+    socket.on("user-typing",(data)=>{
+        socket.to(data.to).emit("user-typing", data.from);
+    })
+
+    socket.on("user-stopped-typing",(data)=>{
+        socket.to(data.to).emit("user-stopped-typing", data.from);
+    })
+
 })
 
 //pass db: nE37smGqow3czJ4e
