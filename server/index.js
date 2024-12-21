@@ -68,11 +68,18 @@ io.on("connection", (socket)=>{
     })
 
     socket.on("user-typing",(data)=>{
-        socket.to(data.to).emit("user-typing", data.from);
-    })
+        const sendUnderSocket = onlineUsers.get(data.to);
+        if(sendUnderSocket){
+            socket.to(sendUnderSocket).emit("user-typing-receive");
+        }
 
+    })
     socket.on("user-stopped-typing",(data)=>{
-        socket.to(data.to).emit("user-stopped-typing", data.from);
+        const sendUnderSocket = onlineUsers.get(data.to);
+        if(sendUnderSocket){
+            socket.to(sendUnderSocket).emit("user-stopped-typing-receive");
+        }
+
     })
 
 })

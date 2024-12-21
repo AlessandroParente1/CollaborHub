@@ -103,7 +103,7 @@ function Chat({ selectedUser, socket }) {
 
     const renderTypingMessage = () => {
         if (isTyping === true) {
-            return <p className='typing-message'>Sta scrivendo...</p>;
+            return <p className='typing-message'>Typing...</p>;
         }
         return null;
     };

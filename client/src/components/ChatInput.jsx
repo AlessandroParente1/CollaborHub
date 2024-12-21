@@ -15,6 +15,9 @@ function ChatInput ({sendMessage, notifyTyping, stoppedTyping}) {
     }
 
     const handleTyping = (e)=>{
+        console.log(e.target.value);
+        console.log(e.target.value.length);
+
         if(e.target.value.length > 0){
             notifyTyping();
         }

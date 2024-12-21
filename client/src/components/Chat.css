@@ -15,3 +15,20 @@
     max-width: 70%;
     margin: 5px auto 5px 0;
 }
+
+
+/* Chat.css */
+.typing-message {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    font-weight: bold;
+    color: blue; /* Un colore visibile, come un rosso-arancio */
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 9999; /* Per essere sicuri che il messaggio sia sopra altri elementi */
+}
+
