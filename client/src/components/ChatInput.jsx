@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { IoMdSend } from "react-icons/io";
 import {Box, TextField, IconButton } from "@mui/material"
 
-function ChatInput ({sendMessage, notifyTyping, stoppedTyping}) {
+function ChatInput ({sendMessage, notifyTyping, notTyping}) {
 
     const [message, setMessage] = useState('');
 
@@ -22,7 +22,7 @@ function ChatInput ({sendMessage, notifyTyping, stoppedTyping}) {
             notifyTyping();
         }
         else{
-            stoppedTyping();
+            notTyping();
         }
     }
 

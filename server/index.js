@@ -5,9 +5,7 @@ const cookieParser =require('cookie-parser');
 const mongoose = require('mongoose'); //Inizializzo Mongoose
 dotenv.config();
 const app = express();
-const http = require('http');
 const {Server} = require('socket.io');
-const {addMessage} = require("./controllers/message.controller");
 
 app.use(express.json());
 app.use(cookieParser());
@@ -63,7 +61,7 @@ io.on("connection", (socket)=>{
     socket.on("send-notification", (data)=>{
         const sendUnderSocket = onlineUsers.get(data.to);
         if(sendUnderSocket){
-            socket.to(sendUnderSocket).emit("notification-receive",data.message)
+            socket.to(sendUnderSocket).emit("notification-receive",data.from)
         }
     })
 

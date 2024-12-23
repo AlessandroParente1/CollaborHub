@@ -1,8 +1,8 @@
 import React, { useState} from 'react';
-import {Box, List, ListItem, ListItemText, CircularProgress, Typography, Button} from '@mui/material';
+import {Box, List, ListItem, ListItemText, Typography, Button, TextField} from '@mui/material';
 import axios from 'axios';
 
-function Sidebar ({onSelectUser, loggedUser, users}) {
+function Sidebar ({onSelectUser, loggedUser, users, handleSearch}) {
 
     const [error, setError] = useState(null);
 
@@ -22,6 +22,7 @@ function Sidebar ({onSelectUser, loggedUser, users}) {
             <Typography variant="h6" sx={{ marginBottom: 2 }}>
                 Online Users
             </Typography>
+            <TextField type="text" placeholder="Search users..." onChange={(e) => handleSearch(e.target.value)} variant="outlined" size="small" fullWidth style={{ marginBottom:'2'}}/>
             {error ? (
                 <Typography color="error">{error}</Typography>
             ) : (
@@ -35,8 +36,7 @@ function Sidebar ({onSelectUser, loggedUser, users}) {
                         ))}
                 </List>
             )}
-            <Button onClick={handleLogout} sx={{position: 'absolute',bottom: 20,left: '50%',transform: 'translateX(-50%)',}} variant="contained" color="secondary"
-            >
+            <Button onClick={handleLogout} sx={{position: 'absolute',bottom: 20,left: '50%',transform: 'translateX(-50%)',}} variant="contained" color="secondary">
                 Logout
             </Button>
         </Box>

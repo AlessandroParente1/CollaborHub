@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box } from '@mui/material';
+import {Box, Typography} from '@mui/material';
 import axios from 'axios';
 import ChatInput from './ChatInput';
 import './Chat.css';
@@ -45,7 +45,7 @@ function Chat({ selectedUser, socket }) {
 
         socket.current.emit("send-notification",{
             to : selectedUser._id,
-            from : loggedUser._id,
+            from : loggedUser.username,
             message : msg
         });
 
@@ -64,7 +64,7 @@ function Chat({ selectedUser, socket }) {
         });
     }
 
-    const stoppedTyping = async() => {
+    const notTyping = async() => {
         const loggedUser =await JSON.parse(localStorage.getItem("user"));
 
         socket.current.emit("user-stopped-typing",{
@@ -73,13 +73,19 @@ function Chat({ selectedUser, socket }) {
         });
     }
 
-    // Ricevi messaggi in tempo reale tramite socket
+    // Ricevi eventi in tempo reale tramite socket
     useEffect(() => {
         if (socket.current) {
             socket.current.on('msg-receive', (msg) => {
                 //quando Ricevo un messaggio da un utente lo aggiungi alla lista
                 setMessages((prev) => [...prev, { fromSelf: false, message: msg }]);
             });
+
+            socket.current.on('notification-receive',(from)=>{
+                console.log(from);
+                alert(`${from} ti ha inviato un messaggio`);
+
+            })
 
             socket.current.on("user-typing-receive", () => {
                 setIsTyping(true);
@@ -96,6 +102,7 @@ function Chat({ selectedUser, socket }) {
                 //Quando l'evento msg-receive viene emesso, non voglio più che questa funzione venga chiamata (smettila di ascoltare)
                 socket.current.off('msg-receive');
                 socket.current.off("user-typing");
+                socket.current.off("notification-receive");
                 socket.current.off("user-stopped-typing");
             }
         };
@@ -110,6 +117,19 @@ function Chat({ selectedUser, socket }) {
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            {/*nome utente con cui si sta chattando*/}
+            {selectedUser && (
+                <Box
+                    sx={{
+                        padding: 2,
+                        borderBottom: '1px solid #ddd',
+                        backgroundColor: '#f5f5f5',
+                        textAlign: 'center',
+                    }}
+                >
+                    <Typography variant="h6">{selectedUser.username}</Typography>
+                </Box>
+            )}
             <div >
                 {messages.map((message, index) => (
                     <div key={index} className={`message ${message.fromSelf ? 'sent' : 'received'}`}>
@@ -120,7 +140,7 @@ function Chat({ selectedUser, socket }) {
             </div>
             {selectedUser && (
                 <Box sx={{ padding: 2, borderTop: '1px solid #ddd' }}>
-                    <ChatInput sendMessage={handleSend} notifyTyping={notifyTyping} stoppedTyping={stoppedTyping} />
+                    <ChatInput sendMessage={handleSend} notifyTyping={notifyTyping} notTyping={notTyping} />
                 </Box>
             )}
         </Box>
