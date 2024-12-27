@@ -14,7 +14,12 @@ function ChatInput ({sendMessage, notifyTyping, notTyping, sendImage}) {
             setMessage("");
         }
         if(image){
-            sendImage(image);
+            //Nota 2
+            const reader =new FileReader();
+            reader.onload=()=>{
+                sendImage(reader.result);
+            }
+            reader.readAsDataURL(image);
             setImage(null);
         }
     }

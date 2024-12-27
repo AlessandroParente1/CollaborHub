@@ -1,4 +1,6 @@
 const Message = require("../models/message.model");
+const cloudinary = require("cloudinary").v2;
+require("dotenv").config();
 
 const getAllMessages = async (req, res) => {
 
@@ -68,4 +70,40 @@ const addMessage = async (req, res) => {
     }
 }
 
-module.exports= {getAllMessages, addMessage};
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET,
+});
+
+const addImage= async(req, res)=>{
+    try {
+        const { from, to, image } = req.body;
+
+        const b64 = Buffer.from(req.file.buffer).toString("base64");
+        let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+        const cldRes = await handleUpload(dataURI);
+
+        // Creazione del messaggio con l'immagine
+        const newMessage = await Message.create({
+            sender: from,
+            receiver: to,
+            image: cldRes.secure_url,
+        });
+
+        res.status(200).json({ message: "Image sent successfully", data: newMessage });
+    }
+    catch (error) {
+        console.log(error);
+        res.send({message: error.message,});
+    }
+}
+
+const handleUpload = async (file)=>{
+    const res = await cloudinary.uploader.upload(file, {
+        resource_type: "auto",
+    });
+    return res;
+}
+
+module.exports= {getAllMessages, addMessage, addImage};

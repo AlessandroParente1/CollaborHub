@@ -55,6 +55,7 @@ function Chat({ selectedUser, socket }) {
         setMessages(updatedMessages)
     }
 
+    //funzionalità Sta scrivendo... (3 funzioni sotto)
     const notifyTyping = async() => {
         const loggedUser =await JSON.parse(localStorage.getItem("user"));
 
@@ -71,6 +72,37 @@ function Chat({ selectedUser, socket }) {
             to : selectedUser._id,
             from : loggedUser._id
         });
+    }
+
+    const renderTypingMessage = () => {
+        if (isTyping === true) {
+            return <p className='typing-message'>Sta scrivendo...</p>;
+        }
+        return null;
+    };
+
+    const sendImage= async(imageData)=>{
+
+        const loggedUser = JSON.parse(localStorage.getItem("user"));
+
+        const formData = new FormData();
+        formData.append("image", image);
+        formData.append("from", loggedUser._id);
+        formData.append("to", selectedUser._id);
+
+        try {
+            const res = await axios.post('http://localhost:5000/api/message/addImage', formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
+            const updatedMessages = [...messages];
+            updatedMessages.push({
+                fromSelf: true,
+                image: res.data.data.image,
+            });
+            setMessages(updatedMessages);
+        } catch (error) {
+            console.error("Error sending image:", error);
+        }
     }
 
     // Ricevi eventi in tempo reale tramite socket
@@ -108,25 +140,11 @@ function Chat({ selectedUser, socket }) {
         };
     }, [socket]);
 
-    const renderTypingMessage = () => {
-        if (isTyping === true) {
-            return <p className='typing-message'>Sta scrivendo...</p>;
-        }
-        return null;
-    };
-
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
             {/*nome utente con cui si sta chattando*/}
             {selectedUser && (
-                <Box
-                    sx={{
-                        padding: 2,
-                        borderBottom: '1px solid #ddd',
-                        backgroundColor: '#f5f5f5',
-                        textAlign: 'center',
-                    }}
-                >
+                <Box sx={{ padding: 2, borderBottom: '1px solid #ddd', backgroundColor: '#f5f5f5', textAlign: 'center'}}>
                     <Typography variant="h6">{selectedUser.username}</Typography>
                 </Box>
             )}
@@ -134,13 +152,14 @@ function Chat({ selectedUser, socket }) {
                 {messages.map((message, index) => (
                     <div key={index} className={`message ${message.fromSelf ? 'sent' : 'received'}`}>
                         <p>{message.message}</p>
+                        <img src={message.image} alt="Sent image" style={{ maxWidth: "200px" }} />
                     </div>
                 ))}
                 {renderTypingMessage()}
             </div>
             {selectedUser && (
                 <Box sx={{ padding: 2, borderTop: '1px solid #ddd' }}>
-                    <ChatInput sendMessage={handleSend} notifyTyping={notifyTyping} notTyping={notTyping} />
+                    <ChatInput sendMessage={handleSend} notifyTyping={notifyTyping} notTyping={notTyping} sendImgae={sendImage}/>
                 </Box>
             )}
         </Box>
