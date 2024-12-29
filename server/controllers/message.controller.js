@@ -36,6 +36,7 @@ const getAllMessages = async (req, res) => {
             return{
                 fromSelf:msg.sender.toString() === from, // Se il mittente è l'utente attuale
                 message: msg.message, //estrae il campo text dall'oggetto message contenuto in message
+                image: msg.image,
             }
 
         })
@@ -78,11 +79,15 @@ cloudinary.config({
 
 const addImage= async(req, res)=>{
     try {
-        const { from, to, image } = req.body;
+
+        const { from, to } = req.body;
 
         const b64 = Buffer.from(req.file.buffer).toString("base64");
         let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
         const cldRes = await handleUpload(dataURI);
+
+        console.log("Image uploaded to Cloudinary:", cldRes.secure_url);
+
 
         // Creazione del messaggio con l'immagine
         const newMessage = await Message.create({

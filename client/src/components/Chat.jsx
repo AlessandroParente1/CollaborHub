@@ -8,7 +8,6 @@ function Chat({ selectedUser, socket }) {
 
     const [messages, setMessages] = useState([]);
     const [isTyping, setIsTyping] = useState(false);
-    const [image, setImage]=useState(null);
 
     const getAllMessages =async()=>{
 
@@ -153,8 +152,11 @@ function Chat({ selectedUser, socket }) {
             <div >
                 {messages.map((message, index) => (
                     <div key={index} className={`message ${message.fromSelf ? 'sent' : 'received'}`}>
-                        <p>{message.message}</p>
-                        <img src={message.image} alt="Sent image" style={{ maxWidth: "200px" }} />
+                        {message.image ? (
+                            <img src={message.image} alt="Sent image" style={{ maxWidth: "200px", borderRadius: "8px" }} />
+                        ) : (
+                            <p>{message.message}</p>
+                        )}
                     </div>
                 ))}
                 {renderTypingMessage()}
