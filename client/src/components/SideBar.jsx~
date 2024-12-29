@@ -23,7 +23,7 @@ function Sidebar ({onSelectUser, loggedUser, users, handleSearch}) {
             <Typography className="sidebar-title">
                 Online Users
             </Typography>
-            <TextField type="text" placeholder="Search users..." onChange={(e) => handleSearch(e.target.value)} variant="outlined" size="small" fullWidth style={{ marginBottom:'5'}}/>
+            <TextField type="text" placeholder="Search users..." onChange={(e) => handleSearch(e.target.value)} variant="outlined" size="small" fullWidth style={{ marginBottom:'2'}}/>
             {error ? (
                 <Typography color="error">{error}</Typography>
             ) : (

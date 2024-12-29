@@ -72,7 +72,7 @@ function Chat({ selectedUser, socket }) {
             const updatedMessages = [...messages];
             updatedMessages.push({
                 fromSelf: true,
-                image: res.data.image,
+                image: res.data.data.image,
             });
             setMessages(updatedMessages);
         } catch (error) {

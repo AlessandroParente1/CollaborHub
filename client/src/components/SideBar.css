@@ -1,0 +1,69 @@
+/* Stile per il contenitore principale della sidebar */
+.sidebar {
+    position: relative;
+    height: 100vh;
+    padding: 16px;
+    background-color: #4a4e69; /* Viola scuro */
+    color: #f2f2f2; /* Colore del testo chiaro */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Titolo della sezione */
+.sidebar-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 16px;
+    text-align: center;
+    color: #9a8c98; /* Viola chiaro */
+}
+
+/* Lista utenti */
+.user-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.user-list-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.2s;
+    cursor: pointer;
+    background-color: #22223b; /* Blu scuro */
+}
+
+.user-list-item:hover {
+    background-color: #9a8c98; /* Viola chiaro al passaggio */
+    color: #22223b; /* Testo scuro */
+    transform: scale(1.05);
+}
+
+/* Stile del testo dell'utente */
+.user-list-item-text {
+    font-size: 1rem;
+    flex-grow: 1;
+}
+
+/* Pulsante Logout */
+.logout-button {
+    position: absolute;
+    bottom: -10px;
+    left: 35%;
+
+    background-color: #c9ada7; /* Colore rosa chiaro */
+    color: #228981; /* Testo scuro */
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.logout-button:hover {
+    background-color: #9a8c98;
+    transform: scale(1.1);
+}

@@ -6,6 +6,7 @@ function ChatInput ({sendMessage, notifyTyping, notTyping, sendImage}) {
 
     const [message, setMessage] = useState('');
     const [image, setImage] = useState(null);
+    const [key, setKey] = useState(0);
 
     const sendChat = (e)=>{
         e.preventDefault();
@@ -33,7 +34,7 @@ function ChatInput ({sendMessage, notifyTyping, notTyping, sendImage}) {
 
         <Box component="form" onSubmit={(e) => sendChat(e)} sx={{display: "flex", alignItems: "center", position: "absolute", bottom: 0, left: 0, right: 0, padding: "8px"}}>
             <TextField type="string"  value={message} onChange={(e) => {setMessage(e.target.value); handleTyping(e);}} placeholder="Message" fullWidth variant="outlined" sx={{marginRight: 1}}/>
-            <Input type='file' inputProps={{accept: "image/png, image/gif, image/jpeg"}} value={image} onChange={(e) => setImage(e.target.files[0])} multiple size='small'/>
+            <Input key={key} type='file' inputProps={{accept: "image/png, image/gif, image/jpeg"}} onChange={(e) =>{ setImage(e.target.files[0]); setKey(prevKey=> prevKey+1)}} multiple size='small'/>
             <IconButton type="submit" color="primary">
                 <IoMdSend />
             </IconButton>
