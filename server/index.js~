@@ -55,34 +55,38 @@ io.on("connection", (socket)=>{
     })
 
     socket.on("send-msg", (data)=>{
-        const sendUnderSocket = onlineUsers.get(data.to);
-        if(sendUnderSocket){
-            if(data.message) {
-                socket.to(sendUnderSocket).emit("msg-receive", data.message)
-            }
-            else socket.to(sendUnderSocket).emit("msg-receive", data.image)
+        const recipientSocket = onlineUsers.get(data.to);
+        if(recipientSocket){
+            socket.to(recipientSocket).emit("msg-receive", data);
 
+        }
+    })
+
+    socket.on('send-img',(data)=>{
+        const recipientSocket = onlineUsers.get(data.to);
+        if(recipientSocket){
+            socket.to(recipientSocket).emit('img-receive', {image: data.image,});
         }
     })
 
     socket.on("send-notification", (data)=>{
-        const sendUnderSocket = onlineUsers.get(data.to);
-        if(sendUnderSocket){
-            socket.to(sendUnderSocket).emit("notification-receive",data.from)
+        const recipientSocket = onlineUsers.get(data.to);
+        if(recipientSocket){
+            socket.to(recipientSocket).emit("notification-receive",data.from)
         }
     })
 
     socket.on("user-typing",(data)=>{
-        const sendUnderSocket = onlineUsers.get(data.to);
-        if(sendUnderSocket){
-            socket.to(sendUnderSocket).emit("user-typing-receive");
+        const recipientSocket = onlineUsers.get(data.to);
+        if(recipientSocket){
+            socket.to(recipientSocket).emit("user-typing-receive");
         }
 
     })
     socket.on("user-stopped-typing",(data)=>{
-        const sendUnderSocket = onlineUsers.get(data.to);
-        if(sendUnderSocket){
-            socket.to(sendUnderSocket).emit("user-stopped-typing-receive");
+        const recipientSocket = onlineUsers.get(data.to);
+        if(recipientSocket){
+            socket.to(recipientSocket).emit("user-stopped-typing-receive");
         }
 
     })

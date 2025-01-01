@@ -71,7 +71,7 @@ function Chat({ selectedUser, socket }) {
             });
 
             // Recupera l'URL dell'immagine dal backend
-            const { data: { data: savedMessage } } = res; //Alternativa const savedMessage = response.data.data;
+            const { data: { data: savedMessage } } = res;
 
             socket.current.emit("send-image",{
                 to : selectedUser._id,

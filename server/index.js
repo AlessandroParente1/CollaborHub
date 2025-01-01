@@ -62,6 +62,14 @@ io.on("connection", (socket)=>{
         }
     })
 
+    socket.on('send-img',(data)=>{
+        const recipientSocket = onlineUsers.get(data.to);
+        if(recipientSocket){
+            socket.to(recipientSocket).emit('img-receive', {image: data.image,});
+            console.log('url immmaine:'+ data.image);
+        }
+    })
+
     socket.on("send-notification", (data)=>{
         const recipientSocket = onlineUsers.get(data.to);
         if(recipientSocket){
