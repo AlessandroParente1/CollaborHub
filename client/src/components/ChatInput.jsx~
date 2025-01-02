@@ -8,6 +8,7 @@ function ChatInput ({sendMessage, notifyTyping, notTyping, sendImage}) {
 
     const [message, setMessage] = useState('');
     const [image, setImage] = useState(null);
+    //selettore di emoji
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
     const sendChat = (e)=>{
