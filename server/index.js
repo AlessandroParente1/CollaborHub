@@ -6,6 +6,7 @@ const mongoose = require('mongoose'); //Inizializzo Mongoose
 dotenv.config();
 const app = express();
 const {Server} = require('socket.io');
+const User = require('./models/user.model.js');
 
 
 app.use(express.json());
@@ -54,7 +55,7 @@ io.on("connection", (socket)=>{
         onlineUsers.set(userId, socket.id);
     })
 
-    socket.on("send-msg", (data)=>{
+    socket.on("send-msg", async (data)=>{
         const recipientSocket = onlineUsers.get(data.to);
         if(recipientSocket){
             socket.to(recipientSocket).emit("msg-receive", data);
@@ -70,27 +71,42 @@ io.on("connection", (socket)=>{
         }
     })
 
-    socket.on("send-notification", (data)=>{
+
+    socket.on("user-typing",async (data)=>{
         const recipientSocket = onlineUsers.get(data.to);
-        if(recipientSocket){
-            socket.to(recipientSocket).emit("notification-receive",data.from)
+        const recipient = await User.findById(data.to);
+
+        if (recipient.inChatWith?.toString() === data.from) {
+            if (recipientSocket) {
+                socket.to(recipientSocket).emit("user-typing-receive", data.from);
+            }
+        }
+
+
+    })
+    socket.on("user-stopped-typing",async(data)=>{
+        const recipientSocket = onlineUsers.get(data.to);
+        const recipient = await User.findById(data.to);
+
+        if (recipient.inChatWith?.toString() === data.from) {
+            if (recipientSocket) {
+                socket.to(recipientSocket).emit("user-stopped-typing-receive", data.from);
+            }
+        }
+
+    })
+
+    socket.on("send-notification", async(data)=>{
+        const recipientSocket = onlineUsers.get(data.to);
+        const recipient = await User.findById(data.to);
+
+        if (recipient.inChatWith?.toString() !== data.from) {
+            if (recipientSocket) {
+                socket.to(recipientSocket).emit("notification-receive", data.from);
+            }
         }
     })
 
-    socket.on("user-typing",(data)=>{
-        const recipientSocket = onlineUsers.get(data.to);
-        if(recipientSocket){
-            socket.to(recipientSocket).emit("user-typing-receive");
-        }
-
-    })
-    socket.on("user-stopped-typing",(data)=>{
-        const recipientSocket = onlineUsers.get(data.to);
-        if(recipientSocket){
-            socket.to(recipientSocket).emit("user-stopped-typing-receive");
-        }
-
-    })
 
 })
 

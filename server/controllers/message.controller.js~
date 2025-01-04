@@ -82,10 +82,8 @@ const addImage= async(req, res)=>{
 
         const { from, to } = req.body;
 
-        //Conversione dell'immagine in formato Base64
         const b64 = Buffer.from(req.file.buffer).toString("base64");
         let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
-        //Upload dell'immagine su cloudinary
         const cldRes = await handleUpload(dataURI);
 
         console.log("Image uploaded to Cloudinary:", cldRes.secure_url);
@@ -108,7 +106,7 @@ const addImage= async(req, res)=>{
 
 const handleUpload = async (file)=>{
     const res = await cloudinary.uploader.upload(file, {
-        resource_type: "auto", //permette a cloudinary di rilevare automaticamente il tipo di file
+        resource_type: "auto",
     });
     return res;
 }

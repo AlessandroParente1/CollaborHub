@@ -130,7 +130,7 @@ function Chat({ selectedUser, socket }) {
             });
 
             socket.current.on('notification-receive',(from)=>{
-                console.log(from);
+                //console.log(from);
                 alert(`${from} ti ha inviato un messaggio`);
 
             })
@@ -157,28 +157,37 @@ function Chat({ selectedUser, socket }) {
         };
     }, [socket]);
 
+    useEffect(() => {
+        console.log("Messages:", messages);
+    }, [messages]);
+
+
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <Box className='chat-container'>
             {/*nome utente con cui si sta chattando*/}
             {selectedUser && (
                 <Box sx={{ padding: 2, borderBottom: '1px solid #ddd', backgroundColor: '#f5f5f5', textAlign: 'center'}}>
                     <Typography variant="h6">{selectedUser.username}</Typography>
                 </Box>
             )}
-            <div >
+            {/* Contenitore dei messaggi */}
+            <div className="chat-messages">
                 {messages.map((message, index) => (
                     <div key={index} className={`message ${message.fromSelf ? 'sent' : 'received'}`}>
                         {message.image ? (
                             <img src={message.image} alt="Sent image" style={{ maxWidth: "200px", borderRadius: "8px" }} />
-                        ) : (
+                        ) : typeof message.message === 'string' ? (
                             <p>{message.message}</p>
+                        ): (
+                            <p>Messaggio non disponibile</p>
                         )}
                     </div>
                 ))}
                 {renderTypingMessage()}
             </div>
+            {/* Barra di input */}
             {selectedUser && (
-                <Box sx={{ padding: 2, borderTop: '1px solid #ddd' }}>
+                <Box className="chat-input-container">
                     <ChatInput sendMessage={handleSend} notifyTyping={notifyTyping} notTyping={notTyping} sendImage={sendImage}/>
                 </Box>
             )}

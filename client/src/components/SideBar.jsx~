@@ -12,6 +12,7 @@ function Sidebar ({onSelectUser, loggedUser, users, handleSearch}) {
         try {
             await axios.post('http://localhost:5000/api/user/logout');  // Chiamata al backend
             console.log('Logout effettuato');
+            localStorage.removeItem("user");
             window.location.href = '/';
         } catch (err) {
             console.error('Errore durante il logout:', err);
@@ -23,7 +24,7 @@ function Sidebar ({onSelectUser, loggedUser, users, handleSearch}) {
             <Typography className="sidebar-title">
                 Online Users
             </Typography>
-            <TextField type="text" placeholder="Search users..." onChange={(e) => handleSearch(e.target.value)} variant="outlined" size="small" fullWidth style={{ marginBottom:'2'}}/>
+            <TextField type="text" placeholder="Search users..." onChange={(e) => handleSearch(e.target.value)} variant="outlined" size="small" fullWidth style={{ marginBottom:'5'}}/>
             {error ? (
                 <Typography color="error">{error}</Typography>
             ) : (

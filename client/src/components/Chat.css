@@ -1,3 +1,4 @@
+/* Messaggi inviati */
 .sent {
     text-align: right;
     background-color: #25D366;
@@ -5,8 +6,10 @@
     border-radius: 10px;
     max-width: 70%;
     margin: 5px 0 5px auto;
+    color: white; /* Testo bianco per contrasto */
 }
 
+/* Messaggi ricevuti */
 .received {
     text-align: left;
     background-color: white;
@@ -14,21 +17,55 @@
     border-radius: 10px;
     max-width: 70%;
     margin: 5px auto 5px 0;
+    color: black; /* Testo nero per leggibilità */
 }
 
+/* Contenitore principale della chat */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Occupa l'altezza completa */
+    overflow: hidden; /* Evita scorrimenti non necessari */
+    background-color: #f3f3f3; /* Colore di sfondo per contrasto */
+}
 
-/* Chat.css */
+/* Area dei messaggi */
+.chat-messages {
+    flex: 1; /* Riempie lo spazio disponibile sopra la barra di input */
+    overflow-y: auto; /* Abilita lo scorrimento verticale */
+    padding: 8px; /* Spaziatura intorno ai messaggi */
+    scrollbar-width: thin; /* Stile scrollbar per Firefox */
+    scrollbar-color: #ccc #f9f9f9; /* Colori personalizzati per Firefox */
+    background-color: #ffffff; /* Sfondo bianco per l'area dei messaggi */
+}
+
+/* Personalizzazione della scrollbar per browser Webkit (Chrome, Edge) */
+.chat-messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background-color: #bbb; /* Colore del pollice */
+    border-radius: 4px; /* Arrotondamento */
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background-color: #888; /* Colore del pollice al passaggio del mouse */
+}
+
+/* Messaggio "Sta scrivendo..." */
 .typing-message {
-    position: fixed;
-    top: 10%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 20px;
-    font-weight: bold;
-    color: blue; /* Un colore visibile, come un rosso-arancio */
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 20px;
-    border-radius: 10px;
-    z-index: 9999; /* Per essere sicuri che il messaggio sia sopra altri elementi */
+    font-size: 14px;
+    font-style: italic;
+    color: gray;
+    margin-top: 5px;
+    text-align: center;
 }
 
+/* Barra di input */
+.chat-input-container {
+    position: relative;
+    padding: 8px;
+    background-color: #f9f9f9; /* Sfondo per la barra di input */
+    border-top: 1px solid #ddd; /* Bordo sopra la barra di input */
+}

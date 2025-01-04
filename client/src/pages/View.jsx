@@ -4,6 +4,7 @@ import React, {useState, useRef, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {io} from "socket.io-client";
 import axios from "axios";
+import './View.css'
 
 function View ()  {
     const navigate = useNavigate();
@@ -38,6 +39,22 @@ function View ()  {
         user.username.toLowerCase().includes(searchQuery)
     );
 
+    const enterChat = async (selectedUser) => {
+
+        const loggedUser =await JSON.parse(localStorage.getItem("user"));
+
+        try {
+            await axios.post("http://localhost:5000/api/user/enterChat", {
+                userId: loggedUser._id,
+                ChatWithId:selectedUser._id,
+            });
+            console.log("Chat entered successfully");
+
+        } catch (err) {
+            console.error("Errore nell'entrare nella chat:", err);
+        }
+    };
+
     useEffect(()=>{
         if(!JSON.parse(localStorage.getItem("user")) ){
             navigate('/');
@@ -60,11 +77,17 @@ function View ()  {
             fetchUsers()
         }},[loggedUser])
 
+    useEffect(() => {
+        if (selectedUser) {
+            enterChat(selectedUser);
+        }
+    }, [selectedUser]);
+
 
     return (
-        <div style={{display: 'grid', gridTemplateColumns: '25% 75%', height: '100vh'}}>
+        <div className='view-container'>
             <Sidebar onSelectUser={setSelectedUser} users={filteredUsers} loggedUser={loggedUser} handleSearch={handleSearch}/>
-            <div style={{flex: 1, padding: 16,  position: 'relative', display: 'flex', flexDirection: 'column'}}>
+            <div className='chat-wrapper'>
                 {selectedUser ? (
                     <Chat selectedUser={selectedUser} socket={socket} />
                 ) : (

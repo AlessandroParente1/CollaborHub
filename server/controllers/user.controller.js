@@ -108,6 +108,21 @@ const getAllUsers = async (req, res) => {
     }
 };
 
+const enterChat= async(req,res)=> {
+    const {userId, chatWithId} = req.body;
 
+    try {
+        const user = await User.findById(userId);
 
-module.exports = {signUp, login, logout, getAllUsers};
+        user.inChatWith = chatWithId;
+        await user.save();
+
+        res.status(200).json({ message: "User entered chat", inChatWith: user.inChatWith });
+    }catch(error){
+        res.status(500).json({ message: "Error entering chat", error });
+
+    }
+
+}
+
+module.exports = {signUp, login, logout, getAllUsers, enterChat};
