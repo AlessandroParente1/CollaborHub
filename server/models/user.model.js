@@ -14,14 +14,11 @@ const userSchema = new mongoose.Schema(
         password: {
             type: String,
             required: [true, 'Inserire una password']},
-        inChatWith:{
-            type: mongoose.Schema.Types.ObjectId,
-            ref:'User',
-        },
+
 
     }
 );
-/*
+
 //prehook eseguiti prima del salvataggio
 
 //verifica che la password dell'utente rispetti una certa complessità prima di salvarla
@@ -45,5 +42,5 @@ userSchema.pre("save", function(next) {
         user.password = hashedPwd;
         next();
     })
-})*/
+})
 module.exports = mongoose.model('User', userSchema);

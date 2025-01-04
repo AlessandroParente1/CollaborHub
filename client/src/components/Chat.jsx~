@@ -146,8 +146,9 @@ function Chat({ selectedUser, socket }) {
             })
 
             socket.current.on("user-stopped-typing-receive", (from) => {
+                if(from === selectedUser._id) {
                     setIsTyping(false);
-
+                }
             })
 
         }
@@ -163,7 +164,11 @@ function Chat({ selectedUser, socket }) {
             }
         };
     }, [socket]);
-
+/*
+    useEffect(() => {
+        console.log("Messages:", messages);
+    }, [messages]);
+*/
 
     return (
         <Box className='chat-container'>

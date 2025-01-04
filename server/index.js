@@ -74,37 +74,30 @@ io.on("connection", (socket)=>{
 
     socket.on("user-typing",async (data)=>{
         const recipientSocket = onlineUsers.get(data.to);
-        const recipient = await User.findById(data.to);
 
-        if (recipient.inChatWith?.toString() === data.from) {
             if (recipientSocket) {
                 socket.to(recipientSocket).emit("user-typing-receive", data.from);
             }
-        }
 
 
     })
     socket.on("user-stopped-typing",async(data)=>{
         const recipientSocket = onlineUsers.get(data.to);
-        const recipient = await User.findById(data.to);
 
-        if (recipient.inChatWith?.toString() === data.from) {
             if (recipientSocket) {
                 socket.to(recipientSocket).emit("user-stopped-typing-receive", data.from);
             }
-        }
+
 
     })
 
     socket.on("send-notification", async(data)=>{
         const recipientSocket = onlineUsers.get(data.to);
-        const recipient = await User.findById(data.to);
 
-        if (recipient.inChatWith?.toString() !== data.from) {
             if (recipientSocket) {
                 socket.to(recipientSocket).emit("notification-receive", data.from);
             }
-        }
+
     })
 
 

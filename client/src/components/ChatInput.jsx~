@@ -4,11 +4,10 @@ import {MdOutlineEmojiEmotions } from "react-icons/md";
 import Picker from "emoji-picker-react";
 import {Box, TextField, IconButton, Input } from "@mui/material"
 
-function ChatInput ({sendMessage, notifyTyping, notTyping, sendImage}) {
+function ChatInput ({sendMessage, notifyTyping, notTyping}) {
 
     const [message, setMessage] = useState('');
-    const [image, setImage] = useState(null);
-    //selettore di emoji
+    //const [image, setImage] = useState(null);
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
     const sendChat = (e)=>{
@@ -17,10 +16,10 @@ function ChatInput ({sendMessage, notifyTyping, notTyping, sendImage}) {
             sendMessage(message)
             setMessage("");
         }
-        if(image){
+       /* if(image){
             sendImage(image);
             setImage(null);
-        }
+        }*/
     }
 
     const handleTyping = (e)=>{
@@ -42,7 +41,7 @@ function ChatInput ({sendMessage, notifyTyping, notTyping, sendImage}) {
             {showEmojiPicker &&                                                       //concateno l'emoji al messaggio di testo
                 <Picker onEmojiClick={(emojiObject)=> setMessage((prev)=> prev + emojiObject.emoji)} />}
             <TextField type="string"  value={message} onChange={(e) => {setMessage(e.target.value); handleTyping(e);}} placeholder="Message" fullWidth variant="outlined" sx={{marginRight: 1}}/>
-            <Input type='file' inputProps={{accept: "image/png, image/gif, image/jpeg"}} onChange={(e) =>{ setImage(e.target.files[0])}} multiple size='small'/>
+            {/*<Input type='file' inputProps={{accept: "image/png, image/gif, image/jpeg"}} onChange={(e) =>{ setImage(e.target.files[0])}} multiple size='small'/>*/}
             <IconButton type="submit" color="primary">
                 <IoMdSend />
             </IconButton>

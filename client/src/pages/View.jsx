@@ -39,22 +39,6 @@ function View ()  {
         user.username.toLowerCase().includes(searchQuery)
     );
 
-    const enterChat = async (selectedUser) => {
-
-        const loggedUser =await JSON.parse(localStorage.getItem("user"));
-
-        try {
-            await axios.post("http://localhost:5000/api/user/enterChat", {
-                userId: loggedUser._id,
-                ChatWithId:selectedUser._id,
-            });
-            console.log("Chat entered successfully");
-
-        } catch (err) {
-            console.error("Errore nell'entrare nella chat:", err);
-        }
-    };
-
     useEffect(()=>{
         if(!JSON.parse(localStorage.getItem("user")) ){
             navigate('/');
@@ -76,12 +60,6 @@ function View ()  {
         if(loggedUser) {
             fetchUsers()
         }},[loggedUser])
-
-    useEffect(() => {
-        if (selectedUser) {
-            enterChat(selectedUser);
-        }
-    }, [selectedUser]);
 
 
     return (
