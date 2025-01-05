@@ -57,8 +57,6 @@ io.on("connection", (socket)=>{
 
     socket.on("send-msg", async (data)=>{
         const recipientSocket = onlineUsers.get(data.to);
-        console.log('recipientSocket testo', recipientSocket);
-
         if(recipientSocket){
             socket.to(recipientSocket).emit("msg-receive", {
                 message: {
@@ -75,7 +73,7 @@ io.on("connection", (socket)=>{
     socket.on('send-image',(data)=>{
         const recipientSocket = onlineUsers.get(data.to);
         console.log('data immagine:', data);
-        console.log('recipientSocket immagine', recipientSocket);
+        console.log('recipientSocket', recipientSocket);
         if(recipientSocket){
             socket.to(recipientSocket).emit('img-receive', {image: data.image,});
             console.log('url immmaine:'+ data.image);

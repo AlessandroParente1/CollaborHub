@@ -43,12 +43,6 @@ function Chat({ selectedUser, socket }) {
             message : msg
         });
 
-        socket.current.emit("send-notification",{
-            to : selectedUser._id,
-            from : loggedUser.username,
-            message : msg
-        });
-
         //quando Mando un messaggio da un utente lo aggiungi alla lista
         const updatedMessages = [...messages];
         updatedMessages.push({fromSelf : true, message : msg});
@@ -72,6 +66,10 @@ function Chat({ selectedUser, socket }) {
 
             // Recupera l'URL dell'immagine dal backend
             const { data: { data: savedMessage } } = res; //Alternativa const savedMessage = response.data.data;
+            console.log(res);
+
+            console.log('savedMessage:', savedMessage);
+            console.log('savedMessage.image:', savedMessage.image);
 
             socket.current.emit("send-image",{
                 to : selectedUser._id,
@@ -119,33 +117,34 @@ function Chat({ selectedUser, socket }) {
     // Ricevi eventi in tempo reale tramite socket
     useEffect(() => {
         if (socket.current) {
-            socket.current.on('msg-receive', (msg) => {
-                //quando Ricevo un messaggio da un utente lo aggiungi alla lista
-                setMessages((prev) => [...prev, { fromSelf: false, message: msg }]);
+            socket.current.on('msg-receive', (data) => {
+                // Aggiungi un controllo per standardizzare il formato del messaggio
+                setMessages((prev) => [
+                    ...prev,
+                    {
+                        fromSelf: false,
+                        message: data.message.message || data.message, // Accetta sia oggetti che stringhe
+                        ...(data.message.to && { to: data.message.to }),
+                        ...(data.message.from && { from: data.message.from }),
+                    },
+                ]);
             });
 
             socket.current.on('img-receive', (data) => {
+                console.log('immagine ricevuta:', data.image);
+                console.log("Data dell'immagine ricevuta:", data);
+
                 //quando Ricevo un immagine da un utente lo aggiungi alla lista
                 setMessages((prev) => [...prev, { fromSelf: false, image: data.image }]);
             });
 
-            socket.current.on('notification-receive',(from)=>{
-                console.log(from);
-                console.log(selectedUser._id);
-                if(from !== selectedUser._id){
-                    alert(`${from} ti ha inviato un messaggio`);
-
-                }
-
-            })
-
-            socket.current.on("user-typing-receive", (from) => {
-                if(from === selectedUser._id) {
+            socket.current.on("user-typing-receive", (data) => {
+                if(data.from === selectedUser._id) {
                     setIsTyping(true);
                 }
             })
 
-            socket.current.on("user-stopped-typing-receive", (from) => {
+            socket.current.on("user-stopped-typing-receive", () => {
                     setIsTyping(false);
 
             })
@@ -158,13 +157,13 @@ function Chat({ selectedUser, socket }) {
                 socket.current.off('msg-receive');
                 socket.current.off('img-receive');
                 socket.current.off("user-typing");
-                socket.current.off("notification-receive");
                 socket.current.off("user-stopped-typing");
             }
         };
     }, [socket]);
 
 
+    console.log('messaggi',messages);
     return (
         <Box className='chat-container'>
             {/*nome utente con cui si sta chattando*/}
@@ -179,10 +178,8 @@ function Chat({ selectedUser, socket }) {
                     <div key={index} className={`message ${message.fromSelf ? 'sent' : 'received'}`}>
                         {message.image ? (
                             <img src={message.image} alt="Sent image" style={{ maxWidth: "200px", borderRadius: "8px" }} />
-                        ) : typeof message.message === 'string' ? (
+                        ) :  (
                             <p>{message.message}</p>
-                        ): (
-                            <p>Messaggio non disponibile</p>
                         )}
                     </div>
                 ))}

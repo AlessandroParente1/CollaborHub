@@ -58,7 +58,6 @@ const addMessage = async (req, res) => {
         const { from, to, message } = req.body;
         const data = await Message.create({
             message: message,
-            // users: [from, to],
             sender: from,
             receiver: to,
         },{});
@@ -88,7 +87,7 @@ const addImage= async(req, res)=>{
         //Upload dell'immagine su cloudinary
         const cldRes = await handleUpload(dataURI);
 
-        console.log("Image uploaded to Cloudinary:", cldRes.secure_url);
+        //console.log("Image uploaded to Cloudinary:", cldRes.secure_url);
 
 
         // Creazione del messaggio con l'immagine
