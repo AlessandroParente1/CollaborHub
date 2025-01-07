@@ -3,6 +3,7 @@ import axios from 'axios';
 import TextField from '@mui/material/TextField';
 import { FormHelperText, Grid2, Typography, Paper, Button  } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import './Login.css';
 
 function Login() {
     const [error, setError] = useState('');  //stato per gestire errori durante il login

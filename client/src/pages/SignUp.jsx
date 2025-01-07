@@ -3,6 +3,7 @@ import axios from 'axios';
 import TextField from '@mui/material/TextField';
 import { FormHelperText, Grid2, Typography, Paper, Button } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/AccountCircle';
+import './SignUp.css';
 
 function SignUp () {
     const [error, setError] = useState('');

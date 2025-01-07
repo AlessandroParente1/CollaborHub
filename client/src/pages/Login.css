@@ -1,0 +1,60 @@
+.login-container {
+    font-family: Arial, sans-serif;
+    background-color: #e3f2fd; /* Blu chiaro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    min-height: calc(100vh - 40px); /* Margine per evitare restrizioni */
+}
+
+
+/* Icona di login */
+.MuiSvgIcon-root {
+    color: #0d47a1; /* Blu scuro */
+    font-size: 50px;
+    margin-bottom: 10px;
+}
+
+/* Stile per i campi di input */
+.MuiTextField-root {
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+/* Bottone Accedi */
+.MuiButton-root {
+    background-color: #1e88e5; /* Blu medio */
+    color: white;
+    font-weight: bold;
+    width: 100%;
+    margin: 8px 0;
+}
+
+.MuiButton-root:hover {
+    background-color: #1565c0; /* Blu più scuro */
+}
+
+/* Testo di errore */
+.MuiFormHelperText-root {
+    margin-top: 5px;
+    font-size: 0.9rem;
+    color: red;
+}
+
+/* Link per l'iscrizione */
+h5 {
+    text-align: center;
+    margin-top: 20px;
+    color: #0d47a1;
+}
+
+h5 a {
+    color: #1565c0;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+h5 a:hover {
+    text-decoration: underline;
+}

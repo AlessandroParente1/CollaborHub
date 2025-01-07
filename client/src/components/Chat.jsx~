@@ -118,7 +118,6 @@ function Chat({ selectedUser, socket }) {
     useEffect(() => {
         if (socket.current) {
             socket.current.on('msg-receive', (data) => {
-                //Nota 3
                 // Aggiungi un controllo per standardizzare il formato del messaggio
                 setMessages((prev) => [
                     ...prev,

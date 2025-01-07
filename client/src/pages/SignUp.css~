@@ -1,0 +1,58 @@
+
+/* Stile per il contenitore principale */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+
+/* Icona del profilo */
+.MuiSvgIcon-root {
+    color: #388e3c; /* Verde scuro */
+    font-size: 50px;
+    margin-bottom: 10px;
+}
+
+/* Stile per i campi di input */
+.MuiTextField-root {
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+/* Bottone Registrati */
+.MuiButton-root {
+    background-color: #43a047; /* Verde medio */
+    color: white;
+    font-weight: bold;
+    width: 100%;
+}
+
+.MuiButton-root:hover {
+    background-color: #2e7d32; /* Verde più scuro */
+}
+
+/* Testo di errore */
+.MuiFormHelperText-root {
+    margin-top: 5px;
+    font-size: 0.9rem;
+}
+
+/* Link per il login */
+h5 {
+    text-align: center;
+    margin-top: 20px;
+    color: #388e3c;
+}
+
+h5 a {
+    color: #2e7d32;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+h5 a:hover {
+    text-decoration: underline;
+}
