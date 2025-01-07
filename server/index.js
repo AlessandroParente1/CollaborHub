@@ -6,7 +6,6 @@ const mongoose = require('mongoose'); //Inizializzo Mongoose
 dotenv.config();
 const app = express();
 const {Server} = require('socket.io');
-const User = require('./models/user.model.js');
 
 
 app.use(express.json());

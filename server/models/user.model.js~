@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema(
 );
 
 //prehook eseguiti prima del salvataggio
-/*
+
 //verifica che la password dell'utente rispetti una certa complessità prima di salvarla
 userSchema.pre("save", function(next) {
     const user = this;
@@ -50,5 +50,5 @@ userSchema.pre("save", function(next) {
         user.password = hashedPwd;
         next();
     })
-})*/
+})
 module.exports = mongoose.model('User', userSchema);

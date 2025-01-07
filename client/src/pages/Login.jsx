@@ -11,6 +11,8 @@ function Login() {
         username: '',
         password: ''
     })
+    const [otp, setOtp] = useState('');
+    const [showOtpField, setShowOtpField] = useState(false);
 
     const handleInput = (e) => {
         setFormData({
@@ -18,6 +20,11 @@ function Login() {
             [e.target.name]: e.target.value
         });
     }
+
+    const handleOtpInput = (e) => {
+        setOtp(e.target.value);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = new FormData();
@@ -25,15 +32,42 @@ function Login() {
         data.append('password', formData.password);
         try {
             const response = await axios.post('http://localhost:5000/api/user/login', data);
-            localStorage.setItem('user', JSON.stringify(response.data.user));
             console.log(response.data);
-            window.location.href = '/home'
+
+            if (response.data.success) {
+                setShowOtpField(true);
+                alert('OTP inviato alla tua email. Controlla la tua casella di posta.');
+            } else {
+                setError(response.data.message);
+            }
+
         } catch (err) {
             if (err.status === 400) {
                 setError(err.response.data.msg);
             }
         }
     }
+
+    const handleOtpVerification =async(e) => {
+        e.preventDefault();
+        const data = new FormData();
+        data.append('otp', otp);
+        try {
+            const response = await axios.post('http://localhost:5000/api/user/verifyOtp', data);
+            console.log(response.data);
+            if (response.data.success) {
+                localStorage.setItem('user', JSON.stringify(response.data.user));
+                window.location.href = '/home';
+            } else {
+                setError(response.data.message);
+            }
+        } catch (err) {
+            if (err.status === 400) {
+                setError(err.response.data.msg);
+            }
+        }
+    }
+
     return (
         <Grid2 container direction="column" justifyContent="center" alignItems="center" style={{ minHeight: '100vh' }}>
             <Paper style={{padding:'20 px', height:'70 vh', width: 280, margin: 'auto'}}>
@@ -47,10 +81,21 @@ function Login() {
                     <TextField label ='Username' name='username' placeholder='Inserisci username' value={formData.username} onChange={handleInput} fullWidth required/>
                     <TextField label ='Password' name='password' placeholder='Inserisci password' type ='password' value={formData.password} onChange={handleInput} fullWidth required/>
                     {error && (<FormHelperText sx={{ color: 'red' }}>{error}</FormHelperText>)}
-                    <Button type ='submit' color ='primary' variant= 'contained' style ={{margin : '8 px 0'}} fullWidth>
-                        Accedi
-                    </Button>
+                    {!showOtpField&&(
+                        <Button type ='submit' color ='primary' variant= 'contained' style ={{margin : '8 px 0'}} fullWidth>
+                            Accedi
+                        </Button>
+                    )}
+
                 </form>
+                {showOtpField && (
+                    <form onSubmit={handleOtpVerification}>
+                        <TextField label="Inserisci OTP" name="otp" placeholder="Inserisci OTP" value={otp} onChange={handleOtpInput} fullWidth required />
+                        <Button type="submit" color="primary" variant="contained" style={{ margin: '8px 0' }} fullWidth>
+                            Verifica OTP
+                        </Button>
+                    </form>
+                )}
                 <h5>Non hai un account? <a href ="/signup">Iscriviti</a> </h5>
             </Paper>
         </Grid2>

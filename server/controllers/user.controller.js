@@ -1,8 +1,38 @@
 const User = require("../models/user.model.js");
 const jsonwebtoken = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const nodemailer =require('nodemailer');
+const randomize = require('randomatic');
 
 const SECRET_KEY = process.env.SECRET_KEY || "";
+
+async function sendOtpEmail(email, otp) {
+
+try{
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS,
+        },
+    });
+
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: "OTP Verification",
+        text: `Your OTP is: ${otp}`,
+    };
+
+    const info =
+        await transporter.sendMail(mailOptions);
+    console.log('Email sent: ' + info.response);
+
+} catch (error) {
+    console.error('Error sending email:', error);
+}
+
+}
 
 const  signUp = async (req, res) => {
     try {
@@ -55,27 +85,83 @@ const login = async (req, res) => {
         if (!user) {
             return res.status(400).json({msg: 'Account non esistente con questo username!'})
         } else if (await bcrypt.compare(password, user.password)) {
-            const token = jsonwebtoken.sign({id: user._id}, SECRET_KEY, {expiresIn: '1d'})
-            res.cookie("jwtToken", token, {
-                httpOnly: true,
-                //secure: true,
-                sameSite: 'strict',
-                expires: new Date(Date.now() + 1000*60*60*24)
-            }).json({msg: "Accesso effettuato", user: {
-                    _id: user._id,
-                    username: user.username,
-                    email: user.email
-                }});
+
+            const otp =randomize("0",6); //Genera un Otp a 6 cifre
+            const otpExpiry= new Date(Date.now()+5*60*1000); //Otp valido per 5 minuti
+
+            user.otp= otp;
+            user.otpExpiresAt= otpExpiry;
+            await user.save();
+
+            await sendOtpEmail(user.email, otp);
+
+            return res.status(200).json({
+                success:true,
+                msg: "OTP inviato al tuo indirizzo email. Inseriscilo per completare l'accesso.",
+                userId: user._id,
+            });
+
         } else {
             return res.status(400).json({msg: 'Username o password errati'})
         }
     }
     catch (err) {
-        console.log(err);
-        res.json({msg: "Errore"})
+        console.error('Errore durante il login:', err.message);
+        return res.status(500).json(
+            {
+                success: false,
+                message: 'Errore durante il login'
+            }
+        );
     }
 
 };
+
+const verifyOtp = async(req,res)=>{
+    try {
+        const { otp } = req.body;
+        console.log(otp);
+
+        const user = await User.findOne({otp});
+
+        if (!user || user.otp !== otp || user.otpExpiresAt < new Date()) {
+            return res.status(400).json({
+                success: false,
+                msg: "OTP non valido o scaduto"
+            });
+        }
+
+        user.otp = '';
+        user.otpExpiresAt = null;
+        await user.save();
+
+        const token = jsonwebtoken.sign({id: user._id}, SECRET_KEY, {expiresIn: '1d'})
+
+        res.cookie("jwtToken", token, {
+            httpOnly: true,
+            //secure: true,
+            sameSite: 'strict',
+            expires: new Date(Date.now() + 1000*60*60*24)
+        }).json({
+            success:true,
+            msg: "Accesso effettuato",
+            user: {
+                _id: user._id,
+                username: user.username,
+                email: user.email
+            }});
+
+    } catch (err) {
+        console.error('Errore durante la verifica dell OTP:', err.message);
+        return res.status(500)
+            .json(
+                {
+                    success: false,
+                    message: 'Errore durante la verifica dell OTP'
+                }
+            );
+    }
+}
 
 const logout = async (req, res) => {
     try {
@@ -110,4 +196,4 @@ const getAllUsers = async (req, res) => {
 
 
 
-module.exports = {signUp, login, logout, getAllUsers};
+module.exports = {signUp, login, logout, getAllUsers, verifyOtp};
