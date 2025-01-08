@@ -27,7 +27,7 @@ function SignUp () {
         data.append('username', formData.username);
         data.append('password', formData.password);
         try {
-            const response = await axios.post('http://localhost:5000/api/user/signUp', data, {
+            const response = await axios.post('https://collaborhub-backend.onrender.com/api/user/signUp', data, {
                 headers: {
                     'Content-Type': 'application/json'
                 }

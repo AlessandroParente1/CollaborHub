@@ -14,7 +14,7 @@ function Chat({ selectedUser, socket }) {
         const loggedUser =await JSON.parse(localStorage.getItem("user"));
 
         const res = await axios.get(
-            `http://localhost:5000/api/message/getAllMessages?from=${loggedUser._id}&to=${selectedUser._id}`,{});
+            `https://collaborhub-backend.onrender.com/api/message/getAllMessages?from=${loggedUser._id}&to=${selectedUser._id}`,{});
 
         //console.log(res.data);
         setMessages(res.data);
@@ -32,7 +32,7 @@ function Chat({ selectedUser, socket }) {
 
         const loggedUser =await JSON.parse(localStorage.getItem("user"));
 
-        await axios.post('http://localhost:5000/api/message/addMessage',{
+        await axios.post('https://collaborhub-backend.onrender.com/api/message/addMessage',{
             from : loggedUser._id,
             to : selectedUser._id,
             message : msg
@@ -60,7 +60,7 @@ function Chat({ selectedUser, socket }) {
         formData.append("to", selectedUser._id);
 
         try {
-            const res = await axios.post('http://localhost:5000/api/message/addImage', formData, {
+            const res = await axios.post('https://collaborhub-backend.onrender.com/api/message/addImage', formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
 

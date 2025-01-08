@@ -10,7 +10,7 @@ function Sidebar ({onSelectUser, loggedUser, users, handleSearch}) {
     // Funzione per fare il logout (chiamata al backend)
     const handleLogout = async () => {
         try {
-            await axios.post('http://localhost:5000/api/user/logout');  // Chiamata al backend
+            await axios.post('https://collaborhub-backend.onrender.com/api/user/logout');  // Chiamata al backend
             console.log('Logout effettuato');
             window.location.href = '/';
         } catch (err) {
