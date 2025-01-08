@@ -22,8 +22,6 @@ const userSchema = new mongoose.Schema(
             type:Date,
             default: null,
         }
-
-
     }
 );
 
@@ -33,7 +31,7 @@ const userSchema = new mongoose.Schema(
 userSchema.pre("save", function(next) {
     const user = this;
     const pwdRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/
-    //es pass valida: Test@123
+    //es pass valida: Prov@123
     if (pwdRegex.test(user.password)) {
         next();
     } else {

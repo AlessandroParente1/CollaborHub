@@ -47,7 +47,16 @@ const  signUp = async (req, res) => {
             return res.status(400).json({msg: "Username già esistente! Scegline un altro"})
         }
 
-        const user = await User.create({ username, email, password })
+        const pwdRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+        if (!pwdRegex.test(password)) {
+            return res.status(400).json({
+                msg: "La password deve essere lunga almeno 6 caratteri, contenere almeno un numero e un carattere speciale (@$!%*?&)."
+            });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const user = await User.create({ username, email, password:hashedPassword })
         const token = jsonwebtoken.sign({id: user._id}, SECRET_KEY, {expiresIn: '1d'})
 
         res.cookie("jwtToken", token, {
