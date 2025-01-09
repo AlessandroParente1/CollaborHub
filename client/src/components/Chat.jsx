@@ -43,6 +43,12 @@ function Chat({ selectedUser, socket }) {
             message : msg
         });
 
+        socket.current.emit("send-notification",{
+            to : selectedUser._id,
+            from : loggedUser.username,
+            fromId: loggedUser._id,
+        });
+
         //quando Mando un messaggio da un utente lo aggiungi alla lista
         const updatedMessages = [...messages];
         updatedMessages.push({fromSelf : true, message : msg});
@@ -133,8 +139,8 @@ function Chat({ selectedUser, socket }) {
             });
 
             socket.current.on('img-receive', (data) => {
-                console.log('immagine ricevuta:', data.image);
-                console.log("Data dell'immagine ricevuta:", data);
+                //console.log('immagine ricevuta:', data.image);
+                //console.log("Data dell'immagine ricevuta:", data);
 
                 //quando Ricevo un immagine da un utente lo aggiungi alla lista
                 setMessages((prev) => [...prev, { fromSelf: false, image: data.image }]);
@@ -151,6 +157,18 @@ function Chat({ selectedUser, socket }) {
 
             })
 
+            socket.current.on('notification-receive',(data)=>{
+                //console.log('data.fromId',data.fromId);
+                //console.log('selectedUser._id',selectedUser._id);
+                //console.log('selectedUser.username',selectedUser.username);
+                //console.log('data.from',data.from);
+                if(selectedUser && data.fromId !== selectedUser._id){//aggiungere selecteduser = none
+                    alert(`${data.from} ti ha inviato un messaggio`);
+
+                }
+
+            })
+
         }
 
         return () => {
@@ -161,9 +179,10 @@ function Chat({ selectedUser, socket }) {
                 socket.current.off("user-typing-receive");
                 socket.current.off("user-stopped-typing-receive");
                 socket.current.off('remove-user-receive');
+                socket.current.off('notification-receive');
             }
         };
-    }, [socket]);
+    }, [socket, selectedUser]);
 
 
     //console.log('messaggi',messages);

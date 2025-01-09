@@ -22,9 +22,6 @@ function Sidebar ({onSelectUser, loggedUser, users, handleSearch, socket}) {
     useEffect(() => {
 
         if (socket.current) {
-
-            socket.current.emit("get-online-users");
-
             socket.current.on("update-online-users", (onlineUsers) => {
                 console.log('Online users received:', onlineUsers);
                 setOnlineUsers(onlineUsers);
@@ -41,7 +38,7 @@ function Sidebar ({onSelectUser, loggedUser, users, handleSearch, socket}) {
     return (
         <Box className={'sidebar'}>
             <Typography className="sidebar-title">
-                Users
+                Online Users
             </Typography>
             <TextField type="text" placeholder="Search users..." onChange={(e) => handleSearch(e.target.value)} variant="outlined" size="small" fullWidth style={{ marginBottom:'5'}}/>
             {error ? (

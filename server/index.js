@@ -55,6 +55,10 @@ io.on("connection", (socket)=>{
         io.emit("update-online-users", Array.from(onlineUsers.keys()));
     })
 
+    socket.on("get-online-users", () => {
+        socket.emit("update-online-users", Array.from(onlineUsers.keys()));
+    });
+
     socket.on("send-msg", async (data)=>{
         const recipientSocket = onlineUsers.get(data.to);
         console.log('recipientSocket testo', recipientSocket);
@@ -113,6 +117,15 @@ io.on("connection", (socket)=>{
         io.emit("update-online-users", Array.from(onlineUsers.keys())); // Emit aggiornamento lista utenti online
         console.log('user disconnnesso', socket.id);
     });
+
+    socket.on("send-notification", async(data)=>{
+        const recipientSocket = onlineUsers.get(data.to);
+
+        if (recipientSocket) {
+            socket.to(recipientSocket).emit("notification-receive", data);
+        }
+
+    })
 
 })
 

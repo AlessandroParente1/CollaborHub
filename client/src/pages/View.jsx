@@ -14,6 +14,8 @@ function View ()  {
     const [users, setUsers] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
 
+    //console.log('selectedUser',selectedUser);
+
     const getUser=async() =>{
         const user = await JSON.parse(localStorage.getItem("user"));
         setLoggedUser(user);
