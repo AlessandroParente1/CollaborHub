@@ -11,7 +11,7 @@ const {Server} = require('socket.io');
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin:"https://collaborhub-frontend.onrender.com || http://localhost:3000",  // L'indirizzo del frontend
+    origin:"https://collaborhub-frontend.onrender.com",  // L'indirizzo del frontend
     credentials: true  // Per i cookie
 }));
 app.use(express.urlencoded({extended: true})); //Affinchè possa prendere dai form i campi //secret passcode
