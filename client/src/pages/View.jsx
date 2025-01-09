@@ -22,8 +22,7 @@ function View ()  {
     // Funzione per recuperare la lista degli utenti da mostrare nella SideBar
     const fetchUsers = async () => {
         try {
-            const response = await axios.get('https://collaborhub-backend.onrender.com/api/user/getAllUsers',{    withCredentials: true,
-            });
+            const response = await axios.get('https://collaborhub-backend.onrender.com/api/user/getAllUsers');
             setUsers(response.data.users);
         } catch (err) {
             console.error('Errore durante il recupero degli utenti:', err);
