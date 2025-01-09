@@ -49,9 +49,9 @@
 
 /* Pulsante Logout */
 .logout-button {
-    position: absolute;
+    margin-top:auto;
+    align-self: center;
     bottom: -10px;
-    left: 35%;
 
     background-color: #c9ada7; /* Colore rosa chiaro */
     color: #228981; /* Testo scuro */
@@ -66,4 +66,9 @@
 .logout-button:hover {
     background-color: #9a8c98;
     transform: scale(1.1);
+}
+
+.online-status {
+    color: green;
+    margin-left: 10px;
 }

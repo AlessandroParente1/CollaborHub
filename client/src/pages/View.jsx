@@ -64,7 +64,7 @@ function View ()  {
 
     return (
         <div className='view-container'>
-            <Sidebar onSelectUser={setSelectedUser} users={filteredUsers} loggedUser={loggedUser} handleSearch={handleSearch}/>
+            <Sidebar onSelectUser={setSelectedUser} users={filteredUsers} loggedUser={loggedUser} handleSearch={handleSearch} socket={socket}/>
             <div className='chat-wrapper'>
                 {selectedUser ? (
                     <Chat selectedUser={selectedUser} socket={socket} />

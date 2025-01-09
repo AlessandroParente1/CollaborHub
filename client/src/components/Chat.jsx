@@ -158,8 +158,9 @@ function Chat({ selectedUser, socket }) {
                 //Quando l'evento msg-receive viene emesso, non voglio più che questa funzione venga chiamata (smettila di ascoltare)
                 socket.current.off('msg-receive');
                 socket.current.off('img-receive');
-                socket.current.off("user-typing");
-                socket.current.off("user-stopped-typing");
+                socket.current.off("user-typing-receive");
+                socket.current.off("user-stopped-typing-receive");
+                socket.current.off('remove-user-receive');
             }
         };
     }, [socket]);

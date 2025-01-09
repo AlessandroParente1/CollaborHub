@@ -3,9 +3,10 @@ import {Box, List, ListItem, ListItemText, Typography, Button, TextField} from '
 import axios from 'axios';
 import './SideBar.css';
 
-function Sidebar ({onSelectUser, loggedUser, users, handleSearch}) {
+function Sidebar ({onSelectUser, loggedUser, users, handleSearch, socket}) {
 
     const [error, setError] = useState(null);
+    const [onlineUsers, setOnlineUsers] = useState([]);
 
     // Funzione per fare il logout (chiamata al backend)
     const handleLogout = async () => {
@@ -17,6 +18,22 @@ function Sidebar ({onSelectUser, loggedUser, users, handleSearch}) {
             console.error('Errore durante il logout:', err);
         }
     };
+
+    useEffect(() => {
+
+        if (socket.current) {
+            socket.current.on("update-online-users", (onlineUsers) => {
+                console.log('Online users received:', onlineUsers);
+                setOnlineUsers(onlineUsers);
+            });
+
+            return () => {
+                if (socket.current) {
+                    socket.current.off("update-online-users");
+                }
+            };
+        }
+    }, [socket.current]);
 
     return (
         <Box className={'sidebar'}>
@@ -32,7 +49,12 @@ function Sidebar ({onSelectUser, loggedUser, users, handleSearch}) {
                         .filter((user) => user._id !== loggedUser._id) // Filtra gli utenti per escludere l'utente corrente
                         .map((user) => (
                             <ListItem key={user._id} button onClick={() => onSelectUser(user)}  className="user-list-item">
-                                <ListItemText primary={user.username} className="user-list-item-text" />
+                                <ListItemText primary={
+                                    <>
+                                        {user.username}
+                                        {onlineUsers.includes(user._id) &&<span className="online-status"> Online</span>}
+                                    </>
+                                } className="user-list-item-text" />
                             </ListItem>
                         ))}
                 </List>

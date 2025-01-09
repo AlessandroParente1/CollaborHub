@@ -13,6 +13,7 @@ function ChatInput ({sendMessage, notifyTyping, notTyping, sendImage}) {
     const sendChat = (e)=>{
         e.preventDefault();
         if(message.length > 0){
+            notTyping();
             sendMessage(message)
             setMessage("");
         }

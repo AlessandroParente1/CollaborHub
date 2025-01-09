@@ -52,7 +52,6 @@ io.on("connection", (socket)=>{
 
     socket.on("add-user", (userId)=>{
         onlineUsers.set(userId, socket.id);
-        io.emit("update-online-users", Array.from(onlineUsers.keys()));
     })
 
     socket.on("send-msg", async (data)=>{
@@ -103,16 +102,6 @@ io.on("connection", (socket)=>{
 
 
     })
-
-    socket.on("disconnect", () => {
-        onlineUsers.forEach((value, key) => {
-            if (value === socket.id) {
-                onlineUsers.delete(key);
-            }
-        });
-        io.emit("update-online-users", Array.from(onlineUsers.keys())); // Emit aggiornamento lista utenti online
-        console.log('user disconnnesso', socket.id);
-    });
 
 })
 
