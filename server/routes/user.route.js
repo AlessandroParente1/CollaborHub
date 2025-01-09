@@ -7,8 +7,8 @@ router.post("/signUp", signUp);
 router.post("/login", login);
 router.post('/verifyOtp',verifyOtp);
 
-router.post("/logout", verifyToken, logout)
-router.get('/getAllUsers', verifyToken, getAllUsers);
+router.post("/logout", logout)
+router.get('/getAllUsers', getAllUsers);
 
 
 
