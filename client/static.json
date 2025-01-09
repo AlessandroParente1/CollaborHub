@@ -1,6 +1,6 @@
 {
     "routes": {
-        "/**": "index.html"
+        "/**": "./src/index.js"
     }
 
 }
