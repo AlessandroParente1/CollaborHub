@@ -149,7 +149,7 @@ const verifyOtp = async(req,res)=>{
         res.cookie("jwtToken", token, {
             httpOnly: true,
             secure: true,
-            sameSite: 'lax',
+            sameSite: 'none',
             expires: new Date(Date.now() + 1000*60*60*24)
         }).json({
             success:true,
