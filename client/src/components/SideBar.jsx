@@ -44,7 +44,7 @@ function Sidebar ({onSelectUser, loggedUser, users, handleSearch, socket}) {
             <Typography className="sidebar-title">
                 Users
             </Typography>
-            <TextField type="text" placeholder="Search users..." onChange={(e) => handleSearch(e.target.value)} variant="outlined" size="small" fullWidth style={{ marginBottom:'5'}}/>
+            <TextField type="text" placeholder="Search users..." onChange={(e) => handleSearch(e.target.value)} variant="outlined" size="small" fullWidth style={{ marginBottom:'5'}} className={'custom-textfield'}/>
             {error ? (
                 <Typography color="error">{error}</Typography>
             ) : (
@@ -54,13 +54,15 @@ function Sidebar ({onSelectUser, loggedUser, users, handleSearch, socket}) {
                         .map((user) => (
                             <ListItem key={user._id} button onClick={() => onSelectUser(user)}  className="user-list-item">
                                 <ListItemText primary={
-                                    <>
+                                    <div style={{ display: 'flex', alignItems: 'center' }}>
                                         {
                                             user.avatar ? (<img src ={user.avatar} alt='' className="avatar-image"/>): (<AccountCircleIcon/>)
                                         }
                                         {user.username}
+                                        <div style={{ textAlign: 'center' }}>
                                         {onlineUsers.includes(user._id) &&<span className="online-status"> Online</span>}
-                                    </>
+                                        </div>
+                                    </div>
                                 } className="user-list-item-text" />
                             </ListItem>
                         ))}

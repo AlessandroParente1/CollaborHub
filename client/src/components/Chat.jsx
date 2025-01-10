@@ -190,7 +190,7 @@ function Chat({ selectedUser, socket }) {
         <Box className='chat-container'>
             {/*nome utente con cui si sta chattando*/}
             {selectedUser && (
-                <Box sx={{ padding: 2, borderBottom: '1px solid #ddd', backgroundColor: '#f5f5f5', textAlign: 'center'}}>
+                <Box sx={{ padding: 2, borderBottom: '1px solid #ddd', backgroundColor: '#9A9EBB', textAlign: 'center', color:'white'}}>
                     <Typography variant="h6">{selectedUser.username}</Typography>
                 </Box>
             )}
@@ -209,9 +209,9 @@ function Chat({ selectedUser, socket }) {
             </div>
             {/* Barra di input */}
             {selectedUser && (
-                <Box className="chat-input-container">
-                    <ChatInput sendMessage={handleSend} notifyTyping={notifyTyping} notTyping={notTyping} sendImage={sendImage}/>
-                </Box>
+
+                <ChatInput sendMessage={handleSend} notifyTyping={notifyTyping} notTyping={notTyping} sendImage={sendImage}/>
+
             )}
         </Box>
     )

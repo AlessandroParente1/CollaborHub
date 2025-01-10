@@ -1,7 +1,7 @@
 /* Messaggi inviati */
 .sent {
     text-align: right;
-    background-color: #228981;
+    background-color: #22223b;
     padding: 10px;
     border-radius: 10px;
     max-width: 70%;
@@ -31,12 +31,17 @@
 
 /* Area dei messaggi */
 .chat-messages {
-    flex: 1; /* Riempie lo spazio disponibile sopra la barra di input */
-    overflow-y: auto; /* Abilita lo scorrimento verticale */
-    padding: 8px; /* Spaziatura intorno ai messaggi */
-    scrollbar-width: thin; /* Stile scrollbar per Firefox */
-    scrollbar-color: #ccc #f9f9f9; /* Colori personalizzati per Firefox */
-    background-color: #ffffff; /* Sfondo bianco per l'area dei messaggi */
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: #ccc #f9f9f9;
+
+    /* Sfondo con colore e pattern */
+    background-color: #DFDBE5; /* Colore base */
+    background-size: cover; /* Adatta l'immagine per coprire tutto */
+    background-repeat: no-repeat; /* Evita la ripetizione */
+    background-position: center; /* Centra il pattern */
 }
 
 /* Personalizzazione della scrollbar per browser Webkit (Chrome, Edge) */
@@ -60,12 +65,4 @@
     color: gray;
     margin-top: 5px;
     text-align: center;
-}
-
-/* Barra di input */
-.chat-input-container {
-    position: relative;
-    padding: 8px;
-    background-color: #f9f9f9; /* Sfondo per la barra di input */
-    border-top: 1px solid #ddd; /* Bordo sopra la barra di input */
 }

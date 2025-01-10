@@ -71,7 +71,7 @@ function View ()  {
                 {selectedUser ? (
                     <Chat selectedUser={selectedUser} socket={socket} />
                 ) : (
-                    <h2>Select a user to start chatting</h2>
+                    <h2 className="centered-text">Select a user to start chatting</h2>
                 )}
             </div>
         </div>

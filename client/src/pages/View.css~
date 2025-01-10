@@ -4,7 +4,7 @@
     grid-template-columns: 25% 75%; /* Sidebar al 25% e chat al 75% */
     height: 100vh; /* Altezza dell'intera finestra */
     overflow: hidden; /* Nessuno scorrimento globale */
-    background-color:#9A9EBB;
+    background-color:#9a8c98;
 }
 
 /* Sidebar */
