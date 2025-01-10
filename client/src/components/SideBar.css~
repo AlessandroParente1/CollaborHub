@@ -72,10 +72,3 @@
     color: green;
     margin-left: 10px;
 }
-
-.avatar-image {
-    width: 10px;
-    height: 10px;
-    border-radius: 30%;
-    margin-right: 10px;
-}

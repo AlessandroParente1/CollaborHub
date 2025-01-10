@@ -1,4 +1,4 @@
-const {addMessage, getAllMessages, addImage} = require('../controllers/message.controller.js');
+const {addMessage, getAllMessages, addImage, addAvatar} = require('../controllers/message.controller.js');
 const express = require('express');
 const router = express.Router();
 const verifyToken = require("../Middleware/verifyToken.js");

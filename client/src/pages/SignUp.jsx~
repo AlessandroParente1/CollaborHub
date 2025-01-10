@@ -70,7 +70,7 @@ function SignUp () {
             if (response.data.success) {
                 localStorage.setItem('user', JSON.stringify(response.data.user));
                 console.log('response.data.user',response.data.user);
-                window.location.href = '/home';
+                //window.location.href = '/home';
             } else {
                 setError(response.data.message);
             }

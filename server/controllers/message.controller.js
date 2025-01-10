@@ -1,6 +1,6 @@
 const Message = require("../models/message.model");
-const cloudinary = require("cloudinary").v2;
 require("dotenv").config();
+const cloudinary = require("../config/cloudinaryConfig");
 
 const getAllMessages = async (req, res) => {
 
@@ -70,11 +70,6 @@ const addMessage = async (req, res) => {
     }
 }
 
-cloudinary.config({
-    cloud_name: process.env.CLOUD_NAME,
-    api_key: process.env.API_KEY,
-    api_secret: process.env.API_SECRET,
-});
 
 const addImage= async(req, res)=>{
     try {
@@ -111,5 +106,6 @@ const handleUpload = async (file)=>{
     });
     return res;
 }
+
 
 module.exports= {getAllMessages, addMessage, addImage};

@@ -2,6 +2,7 @@ import React, { useState, useEffect} from 'react';
 import {Box, List, ListItem, ListItemText, Typography, Button, TextField} from '@mui/material';
 import axios from 'axios';
 import './SideBar.css';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 function Sidebar ({onSelectUser, loggedUser, users, handleSearch, socket}) {
 
@@ -11,7 +12,7 @@ function Sidebar ({onSelectUser, loggedUser, users, handleSearch, socket}) {
     // Funzione per fare il logout (chiamata al backend)
     const handleLogout = async () => {
         try {
-            await axios.post('https://collaborhub-backend.onrender.com/api/user/logout');  // Chiamata al backend
+            await axios.post('http://localhost:5000/api/user/logout');  // Chiamata al backend
             console.log('Logout effettuato');
             window.location.href = '/';
         } catch (err) {
@@ -54,6 +55,9 @@ function Sidebar ({onSelectUser, loggedUser, users, handleSearch, socket}) {
                             <ListItem key={user._id} button onClick={() => onSelectUser(user)}  className="user-list-item">
                                 <ListItemText primary={
                                     <>
+                                        {
+                                            user.avatar ? (<img src ={user.avatar} alt='' className="avatar-image"/>): (<AccountCircleIcon/>)
+                                        }
                                         {user.username}
                                         {onlineUsers.includes(user._id) &&<span className="online-status"> Online</span>}
                                     </>

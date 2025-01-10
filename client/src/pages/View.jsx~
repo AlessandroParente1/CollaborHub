@@ -17,8 +17,14 @@ function View ()  {
     //console.log('selectedUser',selectedUser);
 
     const getUser=async() =>{
-        const user = await JSON.parse(localStorage.getItem("user"));
-        setLoggedUser(user);
+        const userString = localStorage.getItem("user");
+        if (userString) {
+            const user = JSON.parse(userString);
+            setLoggedUser(user);
+        } else {
+            console.error("No user found in localStorage");
+            navigate('/'); // Se necessario, torna alla pagina di login
+        }
     }
 
     // Funzione per recuperare la lista degli utenti da mostrare nella SideBar
@@ -42,10 +48,10 @@ function View ()  {
     );
 
     useEffect(()=>{
-        if(!JSON.parse(localStorage.getItem("user")) ){
+        const userString = localStorage.getItem("user");
+        if (!userString) {
             navigate('/');
-        }
-        else {
+        } else {
             getUser();
         }
     }, [])

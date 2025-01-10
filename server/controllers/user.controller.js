@@ -3,6 +3,7 @@ const jsonwebtoken = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const nodemailer =require('nodemailer');
 const randomize = require('randomatic');
+const cloudinary = require("../config/cloudinaryConfig");
 
 const SECRET_KEY = process.env.SECRET_KEY || "";
 
@@ -68,6 +69,7 @@ const  signUp = async (req, res) => {
 
         res.status(201).json({
             msg: 'Utente registrato correttamente!',
+            success:true,
             user: {
                 _id : user._id,
                 username : user.username,
@@ -203,6 +205,53 @@ const getAllUsers = async (req, res) => {
     }
 };
 
+const addAvatar= async(req, res)=>{
+    try {
+        const { userId } = req.body;
+        //l'immagine si trova in req.file.buffer
 
+        if (!userId) {
+            return res.status(400).json({ msg: "userId non fornito" });
+        }
 
-module.exports = {signUp, login, logout, getAllUsers, verifyOtp};
+        if (!req.file || !req.file.buffer) {
+            return res.status(400).json({ msg: "Immagine non fornita" });
+        }
+
+        //Conversione dell'immagine in formato Base64
+        const b64 = Buffer.from(req.file.buffer).toString("base64");
+        let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+        //Upload dell'immagine su cloudinary
+        const cldRes = await handleUpload(dataURI);
+
+        console.log("Avatar uploaded to Cloudinary:", cldRes.secure_url);
+
+        // Aggiorna l'avatar dell'utente
+        const user = await User.findByIdAndUpdate(
+            userId,
+            { avatar: cldRes.secure_url },
+            { new: true }
+
+        );
+        console.log('user',user);
+
+        if (!user) {
+            return res.status(404).json({ msg: "Utente non trovato" });
+        }
+
+        res.status(200).json({ success:true, user:user });
+    }
+    catch (error) {
+        console.log(error);
+        res.send({message: error.message,});
+    }
+}
+
+const handleUpload = async (file)=>{
+    const res = await cloudinary.uploader.upload(file, {
+        resource_type: "auto", //permette a cloudinary di rilevare automaticamente il tipo di file
+    });
+    return res;
+}
+
+module.exports = {signUp, login, logout, getAllUsers, verifyOtp, addAvatar};
