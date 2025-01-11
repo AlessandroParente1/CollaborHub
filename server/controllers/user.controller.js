@@ -63,7 +63,7 @@ const  signUp = async (req, res) => {
         res.cookie("jwtToken", token, {
             httpOnly: true,
             secure: true,
-            sameSite: 'strict',
+            sameSite: 'none',
             expires: new Date(Date.now() + 1000*60*60*24)
         });
 
