@@ -9,8 +9,8 @@ const storage = new Multer.memoryStorage();
 const upload = Multer({storage});
 
 
-router.post('/addMessage',verifyToken, addMessage);
-router.get('/getAllMessages',verifyToken, getAllMessages);
-router.post('/addImage', verifyToken, upload.single("image"), addImage);
+router.post('/addMessage', addMessage);
+router.get('/getAllMessages', getAllMessages);
+router.post('/addImage', upload.single("image"), addImage);
 
 module.exports = router;
