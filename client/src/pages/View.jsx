@@ -52,7 +52,7 @@ function View ()  {
 
     useEffect(()=>{
         if(loggedUser) {
-            socket.current = io('localhost:5000');
+            socket.current = io('https://collaborhub-backend.onrender.com');
             socket.current.emit("add-user", loggedUser._id);
         }
 
