@@ -57,7 +57,7 @@ function Login() {
             console.log(response.data);
             if (response.data.success) {
                 localStorage.setItem('user', JSON.stringify(response.data.user));
-                //window.location.href = '/home';
+                window.location.href = '/home';
             } else {
                 setError(response.data.message);
             }
