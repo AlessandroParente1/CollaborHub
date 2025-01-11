@@ -31,7 +31,7 @@ function Login() {
         data.append('username', formData.username);
         data.append('password', formData.password);
         try {
-            const response = await axios.post('http://localhost:5000/api/user/login', data);
+            const response = await axios.post('https://collaborhub-backend.onrender.com/api/user/login', data);
             console.log(response.data);
 
             if (response.data.success) {
@@ -53,7 +53,7 @@ function Login() {
         const data = new FormData();
         data.append('otp', otp);
         try {
-            const response = await axios.post('http://localhost:5000/api/user/verifyOtp', data);
+            const response = await axios.post('https://collaborhub-backend.onrender.com/api/user/verifyOtp', data);
             console.log(response.data);
             if (response.data.success) {
                 localStorage.setItem('user', JSON.stringify(response.data.user));

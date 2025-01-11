@@ -11,7 +11,7 @@ const {Server} = require('socket.io');
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin:"https://localhost:3000",  // L'indirizzo del frontend
+    origin:"http://localhost:3000",  // L'indirizzo del frontend
     credentials: true  // Per i cookie
 }));
 app.use(express.urlencoded({extended: true})); //Affinchè possa prendere dai form i campi //secret passcode
@@ -38,7 +38,7 @@ const server = app.listen(process.env.PORT,()=>{
 
 const io = new Server(server, {
     cors: {
-        origin: 'https://localhost:3000',
+        origin: 'http://localhost:3000',
         methods: ['GET', 'POST'],
         credentials: true,
     },
