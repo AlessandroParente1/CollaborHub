@@ -12,6 +12,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
     origin:"https://collaborhub-frontend.onrender.com",  // L'indirizzo del frontend
+    credentials: true  // Per i cookie
 }));
 app.use(express.urlencoded({extended: true})); //Affinchè possa prendere dai form i campi //secret passcode
 
@@ -39,6 +40,7 @@ const io = new Server(server, {
     cors: {
         origin: 'https://collaborhub-frontend.onrender.com',
         methods: ['GET', 'POST'],
+        credentials: true,
     },
 });
 //Crea una mappa globale (Map) per tenere traccia degli utenti online e delle loro connessioni WebSocket
