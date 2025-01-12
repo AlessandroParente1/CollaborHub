@@ -6,7 +6,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import './Login.css';
 
 function Login() {
-    const [error, setError] = useState('');
+    const [error, setError] = useState('');  //stato per gestire errori durante il login
     const [formData, setFormData] = useState({
         username: '',
         password: ''
@@ -90,7 +90,7 @@ function Login() {
                 </form>
                 {showOtpField && (
                     <form onSubmit={handleOtpVerification}>
-                        <TextField label="Inserisci OTP per fare il Login" name="otp" placeholder="Inserisci OTP" value={otp} onChange={handleOtpInput} fullWidth required />
+                        <TextField label="Inserisci OTP" name="otp" placeholder="Inserisci OTP" value={otp} onChange={handleOtpInput} fullWidth required />
                         <Button type="submit" color="primary" variant="contained" style={{ margin: '8px 0' }} fullWidth>
                             Verifica OTP
                         </Button>

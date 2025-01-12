@@ -131,7 +131,7 @@ function Chat({ selectedUser, socket }) {
                     {
                         fromSelf: false,
                         message: data.message.message || data.message, // Accetta sia oggetti che stringhe
-                        //se data.message.to esiste, aggiunge la proprietà to all'oggetto del messaggio
+                        //se data.message.to esiste crea un oggetto con la proprietà to all'oggetto del messaggio
                         ...(data.message.to && { to: data.message.to }),
                         ...(data.message.from && { from: data.message.from }),
                     },
@@ -162,7 +162,7 @@ function Chat({ selectedUser, socket }) {
                 //console.log('selectedUser._id',selectedUser._id);
                 //console.log('selectedUser.username',selectedUser.username);
                 //console.log('data.from',data.from);
-                if(selectedUser && data.fromId !== selectedUser._id){
+                if(selectedUser && data.fromId !== selectedUser._id){//aggiungere selecteduser = none
                     alert(`${data.from} ti ha inviato un messaggio`);
 
                 }

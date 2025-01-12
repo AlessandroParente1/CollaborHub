@@ -34,7 +34,7 @@ function ChatInput ({sendMessage, notifyTyping, notTyping, sendImage}) {
             notTyping();
         }
     }
-    //Nota 3
+
     return (
         <Box component="form" onSubmit={(e) => sendChat(e)} className='chat-input'>
             <IconButton onClick={() => setShowEmojiPicker(!showEmojiPicker)} sx={{position:'relative'}}>

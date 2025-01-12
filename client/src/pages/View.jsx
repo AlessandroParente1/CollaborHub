@@ -32,7 +32,7 @@ function View ()  {
 
     };
 
-    // Funzione per effettuare la ricerca degli utenti, sotto c'è quella per filtrare gli utenti
+    // Funzione per effettuare la ricerca degli utenti, sotto c'è quella per filtrare gli utenti (per cercare gli utenti)
     const handleSearch = (query) => {
         setSearchQuery(query.toLowerCase());
     };

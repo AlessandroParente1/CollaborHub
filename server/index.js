@@ -11,10 +11,10 @@ const {Server} = require('socket.io');
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin:"https://collaborhub-frontend.onrender.com",  // L'indirizzo del frontend
+    origin:"https://collaborhub-frontend.onrender.com",
     credentials: true  // Per i cookie
 }));
-app.use(express.urlencoded({extended: true})); //Affinchè possa prendere dai form i campi //secret passcode
+app.use(express.urlencoded({extended: true})); //Affinchè possa prendere dai form i campi
 
 
 
@@ -29,7 +29,6 @@ app.use('/api/message',require('./routes/message.route.js'));
 mongoose.connect(process.env.MONGO_URL)
 const db = mongoose.connection;
 db.once("open", () => {console.log("Database connesso con successo")});
-
 
 const server = app.listen(process.env.PORT,()=>{
     console.log(`Server running on Port ${process.env.PORT}`);
@@ -128,6 +127,4 @@ io.on("connection", (socket)=>{
     })
 
 })
-
-//pass db: nE37smGqow3czJ4e
 

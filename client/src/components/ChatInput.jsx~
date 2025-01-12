@@ -49,7 +49,7 @@ function ChatInput ({sendMessage, notifyTyping, notTyping, sendImage}) {
             <IconButton onClick={() => document.getElementById('image-upload').click()} size='small'>
                 <MdPhoto />
             </IconButton>
-            <Input id="image-upload" type='file' accept="image/png, image/gif, image/jpeg" onChange={(e) => setImage(e.target.files[0])} sx={{ display: 'none' }} {/*Nasconde l'input visivamente */}/>
+            <Input id="image-upload" type='file' accept="image/png, image/gif, image/jpeg" onChange={(e) => setImage(e.target.files[0])} sx={{ display: 'none' }} /> {/*Nasconde l'input visivamente */}
             <IconButton type="submit" color="primary">
                 <IoMdSend />
             </IconButton>

@@ -63,7 +63,7 @@ const  signUp = async (req, res) => {
         res.cookie("jwtToken", token, {
             httpOnly: true,
             secure: true,
-            sameSite: 'none',
+            sameSite: 'None',
             expires: new Date(Date.now() + 1000*60*60*24)
         });
 
@@ -151,7 +151,7 @@ const verifyOtp = async(req,res)=>{
         res.cookie("jwtToken", token, {
             httpOnly: true,
             secure: true,
-            sameSite: 'none',
+            sameSite: 'None',
             expires: new Date(Date.now() + 1000*60*60*24)
         }).json({
             success:true,
@@ -197,7 +197,6 @@ const getAllUsers = async (req, res) => {
     } catch (error) {
         console.error('Errore nel recupero degli utenti:', error);
 
-        // Gestione errori
         res.status(500).json({
             success: false,
             message: 'Errore nel recupero degli utenti',
