@@ -1,23 +1,27 @@
+.sent, .received {
+    display: inline-block; /* Per dimensioni dinamiche */
+    padding: 10px;
+    border-radius: 10px;
+    margin: 5px 0;
+    word-wrap: break-word;
+    min-width: 50px; /* Dimensione minima */
+    max-width: calc(70% - 50px); /* Evita di superare i bordi */
+}
+
 /* Messaggi inviati */
 .sent {
     text-align: right;
     background-color: #22223b;
-    padding: 10px;
-    border-radius: 10px;
-    max-width: 70%;
-    margin: 5px 0 5px auto;
-    color: white; /* Testo bianco per contrasto */
+    color: white;
+    margin-left: auto; /* Allinea a destra */
 }
 
 /* Messaggi ricevuti */
 .received {
     text-align: left;
     background-color: white;
-    padding: 10px;
-    border-radius: 10px;
-    max-width: 70%;
-    margin: 5px auto 5px 0;
-    color: black; /* Testo nero per leggibilità */
+    color: black;
+    margin-right: auto; /* Allinea a sinistra */
 }
 
 /* Contenitore principale della chat */
