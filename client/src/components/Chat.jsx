@@ -197,7 +197,7 @@ function Chat({ selectedUser, socket }) {
             {/* Contenitore dei messaggi */}
             <div className="chat-messages">
                 {messages.map((message, index) => (
-                    <div key={index} className={`message ${message.fromSelf ? 'sent' : 'received'}`}>
+                    <div key={index} className={`message ${message.fromSelf ? 'sent' : 'received'}`} style={{width:'${Math.min(Math.max((message.message?.length || 10) * 8, 50), 300)}px'}}>
                         {message.image ? (
                             <img src={message.image} alt="Sent image" style={{ maxWidth: "200px", borderRadius: "8px" }} />
                         ) :  (
