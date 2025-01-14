@@ -74,8 +74,10 @@
 
 .online-status {
     color: green;
+    margin-left: 10px;
     margin-top: 5px;
-    text-align: left;
+    text-align: center;
+
 }
 
 .avatar-image {

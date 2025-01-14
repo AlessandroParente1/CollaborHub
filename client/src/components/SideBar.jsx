@@ -54,16 +54,17 @@ function Sidebar ({onSelectUser, loggedUser, users, handleSearch, socket}) {
                         .map((user) => (
                             <ListItem key={user._id} button onClick={() => onSelectUser(user)}  className="user-list-item">
                                 <ListItemText primary={
-                                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <div style={{display: 'flex', alignItems: 'center'}}>
                                         {
-                                            user.avatar ? (<img src ={user.avatar} alt='' className="avatar-image"/>): (<AccountCircleIcon/>)
+                                            user.avatar ? (<img src={user.avatar} alt='' className="avatar-image"/>) : (
+                                                <AccountCircleIcon/>)
                                         }
-                                        {user.username}
-                                        <div style={{ textAlign: 'center' }}>
-                                        {onlineUsers.includes(user._id) &&<span className="online-status"> Online</span>}
+                                        <div style={{display: 'flex', flexDirection: 'column'}}>
+                                            <span>{user.username}</span>
+                                            {onlineUsers.includes(user._id) && <span className="online-status"> Online</span>}
                                         </div>
                                     </div>
-                                } className="user-list-item-text" />
+                                } className="user-list-item-text"/>
                             </ListItem>
                         ))}
                 </List>
