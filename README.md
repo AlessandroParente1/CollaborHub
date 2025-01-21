@@ -6,7 +6,7 @@
   </a>
 
 <h3 align="center">Real Time Messaging App with 2-Factor Authentication
-<a href="collaborhub-frontend.onrender.com/">(DEMO)</a></h3>
+<a href="https://collaborhub-frontend.onrender.com/">(DEMO)</a></h3>
 
   <p align="center">
     This is a Real Time Messaging App that uses Socket.io and the MERN stack to create a real-time chat experience. It allows users to connect and communicate with each other in real-time.
@@ -93,7 +93,7 @@ Create an issue in this repository
 
 ## Video Demo
 
-[CollaborHub demo.mkv](CollaborHub%20demo.mkv)
+[![Watch the video](https://github.com/AlessandroParente1/CollaborHub/blob/main/client/public/video-thumbnail.jpg)](CollaborHub_Demo.mkv)
 
 ## Author
 
