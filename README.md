@@ -93,7 +93,7 @@ Create an issue in this repository
 
 ## Video Demo
 
-[![Watch the video](https://github.com/AlessandroParente1/CollaborHub/blob/main/client/public/video-thumbnail.jpg)](CollaborHub_Demo.mkv)
+[![Watch the video](https://github.com/AlessandroParente1/CollaborHub/blob/main/client/public/video-thumbnail.jpg)]([CollaborHub_Demo.mkv](https://youtu.be/O8tdEF53lno))
 
 ## Author
 
