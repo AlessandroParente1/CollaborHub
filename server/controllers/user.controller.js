@@ -105,6 +105,7 @@ const login = async (req, res) => {
             await user.save();
 
             await sendOtpEmail(user.email, otp);
+            console.log("otp: "+ otp);
 
             return res.status(200).json({
                 success:true,
